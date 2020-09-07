@@ -32,22 +32,28 @@
   --ui-col-success: #46c725;
 
   /**
+   * Text colors
+   */
+  --ui-col-text: var(--ui-col-dark);
+  --ui-col-placeholder: transparentize(#231f20, 0.75);
+
+  /**
    *  Main colors for different look/fill values.
    */
   --ui-col-default: #231f20;
   --ui-col-default-border: var(--ui-col-default);
+  --ui-col-default-border-focused: var(--ui-col-default);
   --ui-col-default-contrast: var(--ui-col-light);
-  --ui-col-default-shadow: transparentize(var(--ui-col-default), 0.5);
 
   --ui-col-primary: #ee3b37;
   --ui-col-primary-border: var(--ui-col-primary);
+  --ui-col-primary-border-focused: var(--ui-col-primary);
   --ui-col-primary-contrast: var(--ui-col-light);
-  --ui-col-primary-shadow: transparentize(var(--ui-col-primary), 0.5);
 
   --ui-col-secondary: #cbc7c5;
   --ui-col-secondary-border: var(--ui-col-secondary);
+  --ui-col-secondary-border-focused: var(--ui-col-secondary);
   --ui-col-secondary-contrast: var(--ui-col-dark);
-  --ui-col-secondary-shadow: transparentize(var(--ui-col-secondary), 0.5);
 }
 
 /**
