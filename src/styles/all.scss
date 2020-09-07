@@ -1,0 +1,16 @@
+@import "ui";
+@import "vars";
+
+html {
+  font-size: var(--ui-root-font-size);
+}
+
+textarea,
+button,
+select,
+input,
+body,
+span,
+p {
+  font-size: var(--ui-font-size);
+}

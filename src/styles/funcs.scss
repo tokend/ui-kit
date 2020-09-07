@@ -1,0 +1,7 @@
+@function list-get($list, $index, $default) {
+  @if (length($list) >= $index) {
+    @return nth($list, $index);
+  } @else {
+    @return $default;
+  }
+}

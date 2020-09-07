@@ -1,0 +1,114 @@
+@import "vars";
+@import "funcs";
+@import "media";
+
+@mixin ui-base($display: block) {
+  display: $display;
+  box-sizing: border-box;
+  font-size: inherit;
+  line-height: inherit;
+  padding: 0;
+  outline: none;
+  font-family: inherit;
+
+  // todo: make mixin from it
+  transition: all ease-out 300ms;
+}
+
+@mixin ui-can-fill() {
+  border-width: 1px;
+  border-style: solid;
+  border-radius: var(--ui-border-radius);
+
+  &[fill="solid"] {
+    &[look="default"] {
+      color: var(--ui-col-default-contrast);
+      background: var(--ui-col-default);
+      border-color: var(--ui-col-default-border);
+    }
+
+    &[look="primary"] {
+      color: var(--ui-col-primary-contrast);
+      background: var(--ui-col-primary);
+      border-color: var(--ui-col-primary-border);
+    }
+
+    &[look="secondary"] {
+      color: var(--ui-col-secondary-contrast);
+      background: var(--ui-col-secondary);
+      border-color: var(--ui-col-secondary-border);
+    }
+  }
+
+  &[fill="none"] {
+    background: transparent;
+    border-width: 0;
+
+    &[look="default"] {
+      color: var(--ui-col-default-border)
+    }
+
+    &[look="primary"] {
+      color: var(--ui-col-primary-border);
+    }
+
+    &[look="secondary"] {
+      color: var(--ui-col-secondary-border);
+    }
+  }
+}
+
+@mixin ui-can-disabled() {
+  &[is-disabled],
+  &[is-disabled]:hover {
+    cursor: not-allowed;
+
+    &[fill="none"] {
+      color: var(--ui-col-disabled) !important;
+    }
+
+    &[fill="solid"] {
+      color: var(--ui-col-disabled) !important;
+      background: var(--ui-col-disabled-lighten) !important;
+      box-shadow: none !important;
+      border-color: var(--ui-col-disabled) !important;
+      border-style: dashed !important;
+    }
+  }
+}
+
+@mixin ui-can-click() {
+  transition: all linear 300ms;
+
+  &:not([is-disabled]) {
+    &:hover,
+    &:focus {
+      transition: all linear 80ms;
+    }
+
+    &:active {
+      transform: translateY(0.1em);
+    }
+  }
+}
+
+@mixin ui-wrap-soft($display: block) {
+  //@include respond-font-size(var(--ui-font-size));
+
+  font-family: var(--ui-font-family);
+  display: $display;
+}
+
+@mixin ui-wrap($display: block) {
+  @include ui-wrap-soft($display);
+
+  box-sizing: border-box;
+  position: relative;
+  line-height: var(--ui-line-height);
+
+  &__label {
+    line-height: var(--ui-line-height) / 2;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+  }
+}

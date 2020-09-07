@@ -1,0 +1,93 @@
+:root {
+  --ui-root-font-size: 10px;
+
+  /**
+ * Basic font used for all components
+ */
+  --ui-font-family: Roboto, Arial, "Lucida Grande", sans-serif;
+  --ui-font-size: 1.4rem;
+  --ui-line-height: 2.5em;
+
+  /**
+  * Basic border properties for inputs/buttons etc.
+  */
+  --ui-border-radius: 0.5rem;
+  --ui-box-shadow: 0 0.4rem 1rem 0 rgba(0, 0, 0, 0.15);
+
+  /**
+   * Low-level palette
+   */
+  --ui-col-light: #f2f2f2;
+  --ui-col-dark: #231f20;
+  --ui-col-bg: #fff;
+
+  /**
+   * State colors
+   */
+  --ui-col-disabled: #ddd;
+  --ui-col-disabled-lighten: lighten(#ddd, 10%);
+
+  --ui-col-error: #ff4089;
+  --ui-col-warning: #ff872f;
+  --ui-col-success: #46c725;
+
+  /**
+   *  Main colors for different look/fill values.
+   */
+  --ui-col-default: #231f20;
+  --ui-col-default-border: var(--ui-col-default);
+  --ui-col-default-contrast: var(--ui-col-light);
+  --ui-col-default-shadow: transparentize(var(--ui-col-default), 0.5);
+
+  --ui-col-primary: #ee3b37;
+  --ui-col-primary-border: var(--ui-col-primary);
+  --ui-col-primary-contrast: var(--ui-col-light);
+  --ui-col-primary-shadow: transparentize(var(--ui-col-primary), 0.5);
+
+  --ui-col-secondary: #cbc7c5;
+  --ui-col-secondary-border: var(--ui-col-secondary);
+  --ui-col-secondary-contrast: var(--ui-col-dark);
+  --ui-col-secondary-shadow: transparentize(var(--ui-col-secondary), 0.5);
+}
+
+/**
+ * Media Breakpoints list
+ */
+$ui-media-breakpoints: (
+        xs: 600px,
+        sm: 1024px,
+        md: 1280px,
+        lg: 1600px
+) !default;
+
+
+/**
+ * Main Content With map
+ */
+$ui-media-content-width: (
+        xs: 100%,
+        sm: 90%,
+        md: 1200px,
+        lg: 1440px
+) !default;
+
+
+/**
+ * Font size multipliers
+ */
+$ui-typo-font-size-multipliers: (
+        lg: 1,
+        md: 0.85,
+        sm: 0.75,
+        xs: 1,
+) !default;
+
+/**
+ * Media Breakpoints list for height
+ */
+$ui-media-height-breakpoints: (
+        xs: 360px,
+        sm: 420px,
+        md: 600px,
+        lg: 900px
+) !default;
