@@ -4,21 +4,22 @@
   /**
  * Basic font used for all components
  */
-  --ui-font-family: Roboto, Arial, "Lucida Grande", sans-serif;
-  --ui-font-size: 1.4rem;
+  --ui-font-family: 'SourceCodePro', monospaced, 'Arial', sans-serif;
+  --ui-font-size: 1.6rem;
   --ui-line-height: 2.5em;
 
   /**
   * Basic border properties for inputs/buttons etc.
   */
   --ui-border-radius: 0.5rem;
+  --ui-border-width: 0.01rem;
   --ui-box-shadow: 0 0.4rem 1rem 0 rgba(0, 0, 0, 0.15);
 
   /**
    * Low-level palette
    */
   --ui-col-light: #f2f2f2;
-  --ui-col-dark: #231f20;
+  --ui-col-dark: #3a4180;
   --ui-col-bg: #fff;
 
   /**
@@ -27,9 +28,9 @@
   --ui-col-disabled: #ddd;
   --ui-col-disabled-lighten: lighten(#ddd, 10%);
 
-  --ui-col-error: #ff4089;
-  --ui-col-warning: #ff872f;
-  --ui-col-success: #46c725;
+  --ui-col-error: #ef5350;
+  --ui-col-warning: #ffa333;
+  --ui-col-success: #51ca90;
 
   /**
    * Text colors
@@ -40,20 +41,12 @@
   /**
    *  Main colors for different look/fill values.
    */
-  --ui-col-default: #231f20;
-  --ui-col-default-border: var(--ui-col-default);
-  --ui-col-default-border-focused: var(--ui-col-default);
-  --ui-col-default-contrast: var(--ui-col-light);
+  --ui-col-primary: #3a4180;
+  --ui-col-primary-darken: #2a2749;
+  --ui-col-secondary: #837fa1;
 
-  --ui-col-primary: #ee3b37;
-  --ui-col-primary-border: var(--ui-col-primary);
-  --ui-col-primary-border-focused: var(--ui-col-primary);
-  --ui-col-primary-contrast: var(--ui-col-light);
-
-  --ui-col-secondary: #cbc7c5;
-  --ui-col-secondary-border: var(--ui-col-secondary);
-  --ui-col-secondary-border-focused: var(--ui-col-secondary);
-  --ui-col-secondary-contrast: var(--ui-col-dark);
+  --ui-col-primary-contrast: #ffffff;
+  --ui-col-secondary-contrast: #ffffff;
 }
 
 /**

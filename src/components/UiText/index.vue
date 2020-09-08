@@ -201,7 +201,6 @@ export default {
     @include ui-base();
     @include ui-can-fill();
     @include ui-can-text();
-    @include ui-can-focus();
     @include ui-can-disabled();
     @include ui-can-error();
 

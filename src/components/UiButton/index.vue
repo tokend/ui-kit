@@ -5,9 +5,9 @@ export default {
 
   props: {
     /** Set basic appearance of the element.<br>
-     * @value: < default | primary | secondary | alt  >
+     * @value: < primary | secondary | alt  >
      */
-    look: { type: String, default: 'default' },
+    look: { type: String, default: 'primary' },
     /** Set basic fill of the element.<br>
      * @value: < solid | frame | frame-fill | none >
      */
