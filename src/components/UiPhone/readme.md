@@ -34,7 +34,7 @@ With error:
 <ui-phone value="+380998765678" is-error>
   Please provide your phone
 
-  <span slot="error">The value of the field is invalid</span>
+  <template slot="error">The value of the field is invalid</template>
 </ui-phone>
 ```
 
