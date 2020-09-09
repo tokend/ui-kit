@@ -4,11 +4,11 @@
     :class="{ 'ui-phone_is-open': isOpenCountries }"
   >
     <span
+      v-if="hasSlot('default')"
       :class="{
         'ui-phone__label': true,
         'ui-phone__label--error': isError,
       }"
-      v-if="hasSlot('default') && (!hasSlot('error') || !isError)"
     >
       <!-- @slot Use this slot to place the text field label content -->
       <slot />
@@ -108,7 +108,7 @@
     </div>
 
     <span
-      class="ui-phone__label ui-phone__label-error"
+      class="ui-phone__error-msg"
       v-if="hasSlot('error') && isError"
     >
       <!-- @slot Content of this slot will be visible if ``:is-error`` true -->
@@ -294,7 +294,7 @@ export default {
       //  * Triggers when the number changes
       //  * @property {string} value - the whole phone number.
       //  */
-      // this.$emit('input', value ? `${this.dialCode}${value}` : '')
+      this.$emit('input', value ? `${this.dialCode}${value}` : '')
     },
     hasSlot (slot) {
       return !!this.$slots[slot]
@@ -342,14 +342,15 @@ export default {
   --ui-phone-label-text-color: var(--ui-col-primary);
   --ui-phone-label-font-size: 0.75em;
 
-  --ui-phone-button-text-color: var(--ui-col-secondary);
-
   --ui-phone-border-top: none;
   --ui-phone-border-left: none;
   --ui-phone-border-right: none;
   --ui-phone-border-bottom: 1px solid var(--ui-phone-border-color);
 
+  --ui-phone-button-text-color: var(--ui-col-secondary);
   --ui-phone-dropdown-shadow: var(--ui-box-shadow);
+  --ui-phone-err-msg-font-size: 0.75em;
+  --ui-phone-err-msg-padding-top: 0.4rem;
 
   @include ui-wrap(flex);
 
@@ -563,6 +564,13 @@ export default {
     &[is-disabled] {
       color: var(--ui-col-disabled);
     }
+  }
+
+  &__error-msg {
+    color: var(--ui-col-error);
+    font-size: var(--ui-phone-err-msg-font-size);
+    line-height: var(--ui-phone-err-msg-font-size);
+    padding-top: var(--ui-phone-err-msg-padding-top);
   }
 }
 </style>

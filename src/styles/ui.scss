@@ -107,14 +107,8 @@
 @mixin ui-can-error() {
   &[is-error],
   &[is-error]:hover {
-    &[fill="none"] {
-      color: var(--ui-col-error);
-    }
-
-    &[fill="solid"] {
-      color: var(--ui-col-error) !important;
-      border-color: var(--ui-col-error) !important;
-    }
+    color: var(--ui-col-error) !important;
+    border-color: var(--ui-col-error) !important;
   }
 }
 
