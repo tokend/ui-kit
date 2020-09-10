@@ -15,63 +15,80 @@
   transition: all ease-out 300ms;
 }
 
-@mixin ui-can-fill() {
+@mixin ui-can-fill($backgroundPrimary: color, $backgroundSecondary: color, $boxShadow: none) {
   &[fill="solid"] {
     &[look="primary"] {
       color: var(--ui-col-primary-contrast);
-      background: var(--ui-col-primary);
+      background: $backgroundPrimary;
     }
 
     &[look="secondary"] {
       color: var(--ui-col-secondary-contrast);
-      background: var(--ui-col-secondary);
+      background: $backgroundSecondary;
     }
+
+    &[look="error"]
+    {
+      color: var(--ui-col-secondary-contrast);
+      background: var(--ui-col-error);
+    }
+    
   }
 
   &[fill="none"] {
     background: transparent;
     border-width: 0;
+    box-shadow: $boxShadow; 
 
     &[look="primary"] {
-      color: var(--ui-col-primary);
+      color: $backgroundPrimary;
     }
 
     &[look="secondary"] {
-      color: var(--ui-col-secondary);
+      color: $backgroundSecondary;
     }
+
+    &[look="error"]
+    {
+      color: var(--ui-col-error);
+    }
+    
   }
 }
 
-@mixin ui-can-disabled() {
+@mixin ui-can-disabled($backgroundPrimary: color, $backgroundSecondary: color, $opacityPrimary: none, $opacitySecondary: none) {
   &[is-disabled],
   &[is-disabled]:hover {
     cursor: not-allowed;
 
     &[fill="none"] {
-      color: var(--ui-col-disabled) !important;
+      color: white !important;
+      background: $backgroundSecondary !important;
+      opacity: $opacitySecondary;
     }
-
+    
     &[fill="solid"] {
-      color: var(--ui-col-disabled) !important;
-      background: var(--ui-col-disabled-lighten) !important;
+      color: white !important;
+      background: $backgroundPrimary !important;
       box-shadow: none !important;
-      border-color: var(--ui-col-disabled) !important;
-      border-style: dashed !important;
+      border-color: none !important;
+      border-style: none !important;
+      opacity: $opacityPrimary;
     }
   }
 }
 
-@mixin ui-can-click() {
+@mixin ui-can-click($transition: none, $transform: none) {
   transition: all linear 300ms;
 
   &:not([is-disabled]) {
     &:hover,
     &:focus {
-      transition: all linear 80ms;
+      transition: $transition;
     }
 
     &:active {
-      transform: translateY(0.1em);
+      transform: $transform;
     }
   }
 }
