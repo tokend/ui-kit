@@ -16,7 +16,7 @@ With only pinned countries.
 
 Disabled:
 ```jsx
-<ui-phone value="+380998765678" is-disabled>
+<ui-phone value="+380998765678" is-disabled-phone>
   This field is not allowed to fill
 </ui-phone>
 ```

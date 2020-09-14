@@ -80,6 +80,7 @@ export default {
   --ui-button-disabledSecondary-background: rgba(128, 107, 252, 0.7);
   --ui-button-disabledPrimary-opacity: 0.5;
   --ui-button-disabledSecondary-opacity: 0.2;
+  --ui-button-disabled-color: white;
 
   --ui-button-errorPrimary-background: rgb(216,26,37);
   --ui-button-errorSecondary-background: rgba(216,26,37,0.7);
@@ -89,7 +90,7 @@ export default {
   &__button {
     @include ui-base(block);
     @include ui-can-fill(var(--ui-buttons-backgroundPrimary-color),var(--ui-buttons-backgroundSecondary-color), var(--ui-button-box-shadow));
-    @include ui-can-disabled(var(--ui-button-disabledPrimary-background), var(--ui-button-disabledSecondary-background),var(--ui-button-disabledPrimary-opacity), var(--ui-button-disabledSecondary-opacity));
+    @include ui-can-disabled(var(--ui-button-disabledPrimary-background), var(--ui-button-disabledSecondary-background),var(--ui-button-disabledPrimary-opacity), var(--ui-button-disabledSecondary-opacity), var(--ui-button-disabled-color));
     @include ui-can-click(var(--ui-buttons-active-transition),var(--ui-buttons-active-transform));
 
     -webkit-user-select: none;

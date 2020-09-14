@@ -15,7 +15,11 @@
   transition: all ease-out 300ms;
 }
 
-@mixin ui-can-fill($backgroundPrimary: color, $backgroundSecondary: color, $boxShadow: none) {
+@mixin ui-can-fill(
+  $backgroundPrimary: color,
+  $backgroundSecondary: color,
+  $boxShadow: none
+) {
   &[fill="solid"] {
     &[look="primary"] {
       color: var(--ui-col-primary-contrast);
@@ -27,18 +31,16 @@
       background: $backgroundSecondary;
     }
 
-    &[look="error"]
-    {
+    &[look="error"] {
       color: var(--ui-col-secondary-contrast);
       background: var(--ui-col-error);
     }
-    
   }
 
   &[fill="none"] {
     background: transparent;
     border-width: 0;
-    box-shadow: $boxShadow; 
+    box-shadow: $boxShadow;
 
     &[look="primary"] {
       color: $backgroundPrimary;
@@ -48,27 +50,33 @@
       color: $backgroundSecondary;
     }
 
-    &[look="error"]
-    {
+    &[look="error"] {
       color: var(--ui-col-error);
     }
-    
   }
 }
 
-@mixin ui-can-disabled($backgroundPrimary: color, $backgroundSecondary: color, $opacityPrimary: none, $opacitySecondary: none) {
+@mixin ui-can-disabled(
+  $backgroundPrimary: color,
+  $backgroundSecondary: color,
+  $opacityPrimary: none,
+  $opacitySecondary: none,
+  $color: color
+) {
   &[is-disabled],
-  &[is-disabled]:hover {
+  &[is-disabled]:hover,
+  &[is-disabled-phone],
+  &[is-disabled-phone]:hover {
     cursor: not-allowed;
 
     &[fill="none"] {
-      color: white !important;
+      color: $color !important;
       background: $backgroundSecondary !important;
       opacity: $opacitySecondary;
     }
-    
+
     &[fill="solid"] {
-      color: white !important;
+      color: $color !important;
       background: $backgroundPrimary !important;
       box-shadow: none !important;
       border-color: none !important;
@@ -108,31 +116,30 @@
   line-height: var(--ui-line-height);
 }
 
-
 @mixin ui-can-text() {
-  //@include respond-font-size($layout-ui-font-size);
+  // @include respond-font-size($layout-ui-font-size);
 
   font-family: inherit;
   color: var(--ui-col-text);
 
   &::placeholder {
     font-family: inherit;
-    color: var(--ui-col-placeholder);
+    color: transparent;
   }
 }
 
-@mixin ui-can-error() {
+@mixin ui-can-error($color: color, $borderColor: none) {
   &[is-error],
   &[is-error]:hover {
-    color: var(--ui-col-error) !important;
-    border-color: var(--ui-col-error) !important;
+    border-color: $borderColor !important;
+    color: $color; 
   }
 }
 
 @mixin reset-number-appearance {
   &[type="number"] {
     -moz-appearance: textfield;
-    appearance: textfield; /* stylelint-disabled-line */
+    appearance: textfield;
     margin: 0;
 
     &::-webkit-inner-spin-button {
