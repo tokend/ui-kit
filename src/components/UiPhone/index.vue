@@ -22,14 +22,14 @@
       :look="look"
       :fill="fill"
       :is-required="isRequired"
-      :is-disabled="isDisabled"
+      :is-disabled-phone="isDisabled"
       :is-error="isError"
     >
       <ui-button
         fill="none"
         :look="look"
         class="ui-phone__country-dropdown-btn"
-        :is-disabled="isDisabled"
+        :is-disabled-phone="isDisabled"
         @click="toggleCountriesDropdown"
       >
         <ui-flag :country="countryCode" />
@@ -42,7 +42,7 @@
         :mask="currentMask"
         type="text"
         :is-required="isRequired"
-        :is-disabled="isDisabled"
+        :is-disabled-phone="isDisabled"
         :is-error="isError"
         :disabled="isDisabled"
         :placeholder="placeholder"
@@ -66,7 +66,7 @@
         look="secondary"
         class="ui-phone__country-dropdown-filter"
         v-model="filter"
-        :is-disabled="isDisabled"
+        :is-disabled-phone="isDisabled"
         :placeholder="searchPlaceholder"
         ref="searchFilter"
       >
@@ -352,6 +352,8 @@ export default {
   --ui-phone-err-msg-font-size: 0.75em;
   --ui-phone-err-msg-padding-top: 0.4rem;
 
+  --ui-phone-err-background: transparent;
+  --ui-phone-err-color: var(--ui-phone-button-text-color);
   @include ui-wrap(flex);
 
   flex-wrap: wrap;
@@ -374,9 +376,8 @@ export default {
     @include ui-base(flex);
     @include ui-can-fill();
     @include ui-can-text();
-    @include ui-can-disabled();
+    @include ui-can-disabled(var(--ui-phone-err-background),var(--ui-phone-err-background),none,none, var(--ui-phone-err-color));
     @include ui-can-error();
-
     border: var(--ui-phone-border-top);
     border-left: var(--ui-phone-border-left);
     border-right: var(--ui-phone-border-right);
@@ -561,7 +562,7 @@ export default {
       color: var(--ui-col-error);
     }
 
-    &[is-disabled] {
+    &[is-disabled-phone] {
       color: var(--ui-col-disabled);
     }
   }

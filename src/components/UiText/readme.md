@@ -42,9 +42,9 @@ Very basic inputs with flags.
 </ui-text>
 
 
-<ui-text is-error placeholder="Contains errors">
+<ui-text is-error  placeholder="Contains errors" class="ui-text__error">
     Input example with an error
-    <div slot="error">Fok, Somethng went wrong</div>
+    <div slot="error">Fok, Something went wrong</div>
 </ui-text>
 
 
