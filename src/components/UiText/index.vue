@@ -253,7 +253,6 @@ export default {
     &[fill="none"] {
       padding-left: 0;
     }
-
     @include reset-number-appearance();
   }
 
@@ -316,4 +315,5 @@ export default {
     visibility: visible;
   }
 }
+
 </style>

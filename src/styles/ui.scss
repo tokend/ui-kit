@@ -80,7 +80,7 @@
       background: $backgroundPrimary !important;
       box-shadow: none !important;
       border-color: none !important;
-      border-style: none !important;
+      // border-style: none !important;
       opacity: $opacityPrimary;
     }
   }
@@ -143,12 +143,12 @@
     margin: 0;
 
     &::-webkit-inner-spin-button {
-      -webkit-appearance: none;
+      -webkit-appearance: auto;
       margin: 0;
     }
 
     &::-webkit-outer-spin-button {
-      -webkit-appearance: none;
+      -webkit-appearance: auto;
       margin: 0;
     }
   }
