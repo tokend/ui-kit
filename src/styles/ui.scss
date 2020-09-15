@@ -69,9 +69,12 @@
   &[is-disabled-phone]:hover {
     cursor: not-allowed;
 
+    // TODO: let's simplify this whole thing: change the opacity to 0.75 for disabled field and that's enough. No
+    //  complex variables, etc, just opacity
+
     &[fill="none"] {
       color: $color !important;
-      background: $backgroundSecondary !important;
+      background: $backgroundSecondary !important; // TODO: fill=none means there is no background
       opacity: $opacitySecondary;
     }
 
@@ -132,7 +135,7 @@
   &[is-error],
   &[is-error]:hover {
     border-color: $borderColor !important;
-    color: $color; 
+    color: $color;
   }
 }
 
