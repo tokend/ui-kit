@@ -73,8 +73,6 @@ export default {
   --ui-button-box-shadow: var(--ui-box-shadow);
   --ui-button-line-height: var(--ui-line-height);
 
-  --ui-button-disabled-color: white;
-
   position: unset;
 
   &__button {
