@@ -375,7 +375,7 @@ export default {
     @include ui-base(flex);
     @include ui-can-fill();
     @include ui-can-text();
-    @include ui-can-disabled(var(--ui-phone-err-color));
+    @include ui-can-disabled();
     @include ui-can-error();
     border: var(--ui-phone-border-top);
     border-left: var(--ui-phone-border-left);

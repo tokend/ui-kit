@@ -73,18 +73,17 @@ export default {
   --ui-button-box-shadow: var(--ui-box-shadow);
   --ui-button-line-height: var(--ui-line-height);
 
-  --ui-button-disabled-primary-background-color: #806bfc;
-  --ui-button-disabled-primary-background: var(--ui-button-disabled-primary-background-color);
-  --ui-button-disabled-primary-opacity: 0.5;
   --ui-button-disabled-color: white;
 
   position: unset;
 
   &__button {
     @include ui-base(block);
-    @include ui-can-fill(var(--ui-button-background-primary-color), var(--ui-button-background-secondary-color), var(--ui-button-box-shadow));
-    @include ui-can-disabled(var(--ui-button-disabled-color));
-    @include ui-can-click(var(--ui-button-active-transition), var(--ui-button-active-transform));
+    @include ui-can-fill(var(--ui-button-background-primary-color),
+     var(--ui-button-background-secondary-color), var(--ui-button-box-shadow));
+    @include ui-can-disabled();
+    @include ui-can-click(var(--ui-button-active-transition),
+     var(--ui-button-active-transform));
 
     -webkit-user-select: none;
     user-select: none;
@@ -94,7 +93,6 @@ export default {
     padding: var(--ui-button-padding);
     font-size: var(--ui-button-font-size);
     font-weight: var(--ui-button-font-weight);
-    text-align: var(--ui-buttons-text-align);
     min-height: var(--ui-button-min-height);
     border-radius: var(--ui-button-border-radius);
     box-shadow: var(--ui-button-box-shadow);
