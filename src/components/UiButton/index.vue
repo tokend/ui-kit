@@ -68,7 +68,7 @@ export default {
   --ui-button-padding: 0;
   --ui-button-font-size: var(--ui-font-size);
   --ui-button-width: 20rem;
-  --ui-buton-font-weight: 700;
+  --ui-button-font-weight: 700;
   --ui-button-border-radius: var(--ui-border-radius);
   --ui-button-box-shadow: var(--ui-box-shadow);
   --ui-button-line-height: var(--ui-line-height);
@@ -92,7 +92,7 @@ export default {
     cursor: var(--ui-button-hover-cursor);
     padding: var(--ui-button-padding);
     font-size: var(--ui-button-font-size);
-    font-weight: var(--ui-buton-font-weight);
+    font-weight: var(--ui-button-font-weight);
     text-align: var(--ui-buttons-text-align);
     min-height: var(--ui-button-min-height);
     border-radius: var(--ui-button-border-radius);
