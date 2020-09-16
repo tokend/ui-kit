@@ -58,9 +58,7 @@
 
 @mixin ui-can-disabled(
   $backgroundPrimary: color,
-  $backgroundSecondary: color,
   $opacityPrimary: none,
-  $opacitySecondary: none,
   $color: color
 ) {
   &[is-disabled],
@@ -70,9 +68,7 @@
     cursor: not-allowed;
 
     &[fill="none"] {
-      color: $color !important;
-      background: $backgroundSecondary !important;
-      opacity: $opacitySecondary;
+      opacity: 0.75;
     }
 
     &[fill="solid"] {
@@ -80,7 +76,6 @@
       background: $backgroundPrimary !important;
       box-shadow: none !important;
       border-color: none !important;
-      // border-style: none !important;
       opacity: $opacityPrimary;
     }
   }
@@ -102,7 +97,6 @@
 }
 
 @mixin ui-wrap-soft($display: block) {
-  //@include respond-font-size(var(--ui-font-size));
 
   font-family: var(--ui-font-family);
   display: $display;
@@ -132,7 +126,7 @@
   &[is-error],
   &[is-error]:hover {
     border-color: $borderColor !important;
-    color: $color; 
+    color: $color;
   }
 }
 
