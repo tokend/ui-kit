@@ -57,8 +57,6 @@
 }
 
 @mixin ui-can-disabled(
-  $backgroundPrimary: color,
-  $opacityPrimary: none,
   $color: color
 ) {
   &[is-disabled],
@@ -69,14 +67,14 @@
 
     &[fill="none"] {
       opacity: 0.75;
+      box-shadow: none !important;
     }
 
     &[fill="solid"] {
       color: $color !important;
-      background: $backgroundPrimary !important;
       box-shadow: none !important;
       border-color: none !important;
-      opacity: $opacityPrimary;
+      opacity: 0.75;
     }
   }
 }
@@ -125,8 +123,8 @@
 @mixin ui-can-error($color: color, $borderColor: none) {
   &[is-error],
   &[is-error]:hover {
-    border-color: $borderColor !important;
-    color: $color;
+    border-color: var(--ui-col-error) !important;
+    color: var(--ui-col-error);
   }
 }
 

@@ -58,8 +58,8 @@ export default {
 .ui-button {
   @include ui-wrap(inline-block);
   --ui-button-color: white;
-  --ui-button-background-primary-color: #806bfc;
-  --ui-button-background-secondary-color: #a995fa;
+  --ui-button-background-primary-color: var(--ui-col-primary);
+  --ui-button-background-secondary-color: var(--ui-col-secondary);
   --ui-button-border: none;
   --ui-button-hover-cursor: pointer;
   --ui-button-active-transition: none;
@@ -73,7 +73,8 @@ export default {
   --ui-button-box-shadow: var(--ui-box-shadow);
   --ui-button-line-height: var(--ui-line-height);
 
-  --ui-button-disabled-primary-background: #806bfc;
+  --ui-button-disabled-primary-background-color: #806bfc;
+  --ui-button-disabled-primary-background: var(--ui-button-disabled-primary-background-color);
   --ui-button-disabled-primary-opacity: 0.5;
   --ui-button-disabled-color: white;
 
@@ -82,7 +83,7 @@ export default {
   &__button {
     @include ui-base(block);
     @include ui-can-fill(var(--ui-button-background-primary-color), var(--ui-button-background-secondary-color), var(--ui-button-box-shadow));
-    @include ui-can-disabled(var(--ui-button-disabled-primary-background), var(--ui-button-disabled-primary-opacity), var(--ui-button-disabled-color));
+    @include ui-can-disabled(var(--ui-button-disabled-color));
     @include ui-can-click(var(--ui-button-active-transition), var(--ui-button-active-transform));
 
     -webkit-user-select: none;
