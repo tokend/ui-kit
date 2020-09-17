@@ -57,65 +57,52 @@ export default {
 
 .ui-button {
   @include ui-wrap(inline-block);
-  --ui-buttons-color: white;
-  --ui-buttons-backgroundPrimary-color: rgb(128, 107, 252);
-  --ui-buttons-backgroundSecondary-color: rgba(128, 107, 252, 0.7);
-  --ui-buttons-border: none;
-  --ui-buttons-text-align: center;
-  --ui-buttons-hover-cursor: pointer;
-  --ui-buttons-active-transition: none;
-  --ui-buttons-active-transform: none;
-
-  --ui-button-padding: 8px 16px;
-  --ui-button-font-size: 14px;
-  --ui-button-width: 200px;
-  --ui-buton-font-weight: 700;
-  --ui-button-min-height: 36px;
-  --ui-button-border-radius: 2px;
-  --ui-button-box-shadow: 0 0.5px 1px 0 rgba(0, 0, 0, 0.15);
-  --ui-button-height: 36px;
-  --ui-button-line-height: normal;
-
-  --ui-button-disabledPrimary-background: rgb(128, 107, 252);
-  --ui-button-disabledSecondary-background: rgba(128, 107, 252, 0.7);
-  --ui-button-disabledPrimary-opacity: 0.5;
-  --ui-button-disabledSecondary-opacity: 0.2;
-  --ui-button-disabled-color: white;
-
-  --ui-button-errorPrimary-background: rgb(216,26,37);
-  --ui-button-errorSecondary-background: rgba(216,26,37,0.7);
+  --ui-button-color: white;
+  --ui-button-background-primary-color: var(--ui-col-primary);
+  --ui-button-background-secondary-color: var(--ui-col-secondary);
+  --ui-button-border: none;
+  --ui-button-hover-cursor: pointer;
+  --ui-button-active-transition: none;
+  --ui-button-active-transform: none;
+  --ui-button-text-align: center;
+  --ui-button-padding: 0;
+  --ui-button-font-size: var(--ui-font-size);
+  --ui-button-width: 20rem;
+  --ui-button-font-weight: 700;
+  --ui-button-border-radius: var(--ui-border-radius);
+  --ui-button-box-shadow: var(--ui-box-shadow);
+  --ui-button-line-height: var(--ui-line-height);
 
   position: unset;
 
   &__button {
     @include ui-base(block);
-    @include ui-can-fill(var(--ui-buttons-backgroundPrimary-color),var(--ui-buttons-backgroundSecondary-color), var(--ui-button-box-shadow));
-    @include ui-can-disabled(var(--ui-button-disabledPrimary-background), var(--ui-button-disabledSecondary-background),var(--ui-button-disabledPrimary-opacity), var(--ui-button-disabledSecondary-opacity), var(--ui-button-disabled-color));
-    @include ui-can-click(var(--ui-buttons-active-transition),var(--ui-buttons-active-transform));
+    @include ui-can-fill(var(--ui-button-background-primary-color),
+     var(--ui-button-background-secondary-color), var(--ui-button-box-shadow));
+    @include ui-can-disabled();
+    @include ui-can-click(var(--ui-button-active-transition),
+     var(--ui-button-active-transform));
 
     -webkit-user-select: none;
     user-select: none;
 
     display: inline-block;
-    cursor: var(--ui-buttons-hover-cursor);
-    width: 100%;
-
+    cursor: var(--ui-button-hover-cursor);
     padding: var(--ui-button-padding);
     font-size: var(--ui-button-font-size);
-    font-weight: var(--ui-buton-font-weight);
-    text-align: var(--ui-buttons-text-align);
+    font-weight: var(--ui-button-font-weight);
     min-height: var(--ui-button-min-height);
     border-radius: var(--ui-button-border-radius);
     box-shadow: var(--ui-button-box-shadow);
-    color: var(--ui-buttons-color);
+    color: var(--ui-button-color);
     width: var(--ui-button-width);
-    border: var(--ui-buttons-border);
-    height: var(--ui-button-height);
+    border: var(--ui-button-border);
     line-height: var(--ui-button-line-height);
+    text-align: var(--ui-button-text-align);
 
     &:active, &:focus {
-      transform: var(--ui-buttons-active-transform);
-}
+      transform: var(--ui-button-active-transform);
+    }
   }
 }
 </style>

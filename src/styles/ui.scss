@@ -40,7 +40,7 @@
   &[fill="none"] {
     background: transparent;
     border-width: 0;
-    box-shadow: $boxShadow;
+    box-shadow: none;
 
     &[look="primary"] {
       color: $backgroundPrimary;
@@ -56,13 +56,7 @@
   }
 }
 
-@mixin ui-can-disabled(
-  $backgroundPrimary: color,
-  $backgroundSecondary: color,
-  $opacityPrimary: none,
-  $opacitySecondary: none,
-  $color: color
-) {
+@mixin ui-can-disabled() {
   &[is-disabled],
   &[is-disabled]:hover,
   &[is-disabled-phone],
@@ -70,18 +64,14 @@
     cursor: not-allowed;
 
     &[fill="none"] {
-      color: $color !important;
-      background: $backgroundSecondary !important;
-      opacity: $opacitySecondary;
+      opacity: 0.75;
+      box-shadow: none !important;
     }
 
     &[fill="solid"] {
-      color: $color !important;
-      background: $backgroundPrimary !important;
       box-shadow: none !important;
       border-color: none !important;
-      // border-style: none !important;
-      opacity: $opacityPrimary;
+      opacity: 0.75;
     }
   }
 }
@@ -102,7 +92,6 @@
 }
 
 @mixin ui-wrap-soft($display: block) {
-  //@include respond-font-size(var(--ui-font-size));
 
   font-family: var(--ui-font-family);
   display: $display;
@@ -131,8 +120,8 @@
 @mixin ui-can-error($color: color, $borderColor: none) {
   &[is-error],
   &[is-error]:hover {
-    border-color: $borderColor !important;
-    color: $color; 
+    border-color: var(--ui-col-error) !important;
+    color: var(--ui-col-error);
   }
 }
 
