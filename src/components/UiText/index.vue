@@ -1,60 +1,41 @@
 <template>
-  <div class="ui-text" :for="inputId">
-    <span class="ui-text__dock ui-text__dock_left" v-if="hasSlot('dock-left')">
-      <!--
-        @slot Optional slot left from the input.
-        Will npt be rendered if empty.
-      -->
-      <slot name="dock-left" />
-    </span>
-    <span
-      class="ui-text__dock ui-text__dock_right"
-      v-if="hasSlot('dock-right')"
-    >
-      <!--
-        @slot Optional slot right from the input.
-        Will npt be rendered if empty.
-      -->
-      <slot name="dock-right" />
-    </span>
+  <label
+    class="ui-text"
+    :for="inputId"
+    :is-disabled="isDisabled"
+  >
     <input
       class="ui-text__input"
       :id="inputId"
-      :look="look"
-      :fill="fill"
       :is-required="isRequired"
       :is-disabled="isDisabled"
       :is-error="isError"
       :disabled="isDisabled"
-      :placeholder="placeholder"
+      :placeholder="' '"
       :value="value"
       :type="type"
       @input="input"
       v-on="reListeners"
       v-bind="$attrs"
-    />
-
-    <span
-      class="ui-text__label ui-text__span ui-text__label_required-star "
-      :fill="fill"
     >
-      {{ placeholder /* for position purposes, see css */ }}
-    </span>
 
     <span
       class="ui-text__label"
-      v-if="hasSlot('default') && (!hasSlot('error') || !isError)" >
+      v-if="hasSlot('default')"
+    >
       <!-- @slot Use this slot to place the text field label content -->
       <slot />
     </span>
+
     <span
-      class="ui-text__label ui-text__label_is-error"
       v-if="hasSlot('error') && isError"
+      class="ui-text__error-msg"
+      :is-error="isError"
     >
       <!-- @slot Content of this slot will be visible if ``:is-error`` true -->
       <slot name="error" />
     </span>
-  </div>
+  </label>
 </template>
 
 <script>
@@ -68,16 +49,6 @@ export default {
     type: { type: String, default: 'text' },
     /** Regular placeholder */
     placeholder: { type: String, default: '' },
-    /**
-     * Set basic appearance of the element.<br>
-     * @value: < default | primary | secondary | alt  >
-     */
-    look: { type: String, default: 'default' },
-    /**
-     * Set basic fill of the button.<br>
-     * @value: < solid | frame >
-     */
-    fill: { type: String, default: 'frame' },
     /** Mark field as required (visually) */
     isRequired: { type: Boolean, default: false },
     /** Mark field as invalid (visually) */
@@ -168,152 +139,159 @@ export default {
 @import "../../styles/all";
 
 .ui-text {
-  @include ui-wrap(flex);
-  --ui-input-width: 560px;
-  --ui-input-caret-color: #3a4180;
-  --ui-input-color: #3a4180;
-  --ui-input-padding: 17px 0 6px 0;
-  --ui-input-border-bottom: 1px solid #9ba0d2;
-  --ui-input-background: radial-gradient(rgb(58, 65, 128), rgb(58, 65, 128))
-    center bottom -0.1rem / 0px 0.2rem no-repeat;
-  --ui-input-transition-property: background-size, background-color;
-  --ui-input-font-size: 18px;
-  --ui-input-line-height: 1.25;
-  --ui-input-border: none;
-  --ui-input-border-color: rgba(58, 65, 128, 0.7);
-  --ui-einput-color: rgb(58, 65, 128);
+  --ui-text-font-size: var(--ui-font-size);
+  --ui-text-background: #fff;
 
-  --ui-label-color: #3a4180;
-  --ui-label-margin-top: 0.4rem;
-  --ui-label-font-size: 1.2rem;
-  --ui-label-line-height: 1.25;
+  --ui-text-padding-left: 1.2rem;
+  --ui-text-padding-right: 1.2rem;
+  --ui-text-padding-top: 1rem;
+  --ui-text-padding-bottom: 1rem;
+
+  --ui-text-border-color: var(--ui-col-secondary);
+  --ui-text-border-color-hover: var(--ui-text-border-color);
+  --ui-text-border-color-focused: var(--ui-text-border-color);
+  --ui-text-border-top-width: 1px;
+  --ui-text-border-bottom-width: 1px;
+  --ui-text-border-left-width: 1px;
+  --ui-text-border-right-width: 1px;
+
+  --ui-text-border-top: var(--ui-text-border-top-width) solid var(--ui-text-border-color);
+  --ui-text-border-left: var(--ui-text-border-left-width) solid var(--ui-text-border-color);
+  --ui-text-border-right: var(--ui-text-border-right-width) solid var(--ui-text-border-color);
+  --ui-text-border-bottom: var(--ui-text-border-bottom-width) solid var(--ui-text-border-color);
+
+  --ui-text-border-radius: var(--ui-border-radius);
+
+  --ui-text-label-background: var(--ui-text-background);
+  --ui-text-label-padding: 0;
+  --ui-text-label-color: var(--ui-col-secondary);
+  --ui-text-label-color-hover: var(--ui-col-primary);
+  --ui-text-label-color-focused: var(--ui-col-primary);
+  --ui-text-label-font-size: var(--ui-text-font-size);
+  --ui-text-label-transition-duration: 300ms;
+  --ui-text-label-top: calc(
+    var(--ui-text-padding-top) +
+    var(--ui-text-border-top-width) +
+    var(--ui-text-border-bottom-width)
+  );
+  --ui-text-label-left: calc(
+    var(--ui-text-padding-left) +
+    var(--ui-text-border-left-width)
+  );
+
+  --ui-text-label-padding-focused: 0 0.25rem;
+  --ui-text-label-left-focused: var(--ui-text-label-left);
+  --ui-text-label-font-size-focused: 1.2rem;
+  --ui-text-label-top-focused: calc(var(--ui-text-label-font-size-focused) / -2);
+
+  --ui-text-label-padding-filled: var(--ui-text-label-padding-focused);
+  --ui-text-label-left-filled: var(--ui-text-label-left-focused);
+  --ui-text-label-font-size-filled: var(--ui-text-label-font-size-focused);
+  --ui-text-label-top-filled: var(--ui-text-label-top-focused);
+
+  --ui-text-box-shadow: none;
+  --ui-text-box-shadow-hover: none;
+  --ui-text-box-shadow-focused: 0 0 0 1px var(--ui-col-primary);
+
+  --ui-text-err-msg-font-size: 0.75em;
+  --ui-text-err-msg-padding-top: 0.75rem;
+
+  --ui-text-required-star-color: var(--ui-col-error);
+
+  @include ui-wrap(flex);
+  @include ui-can-disabled(0.5);
 
   flex-wrap: wrap;
   position: relative;
 
-  &__error>&__label{
-    color: var(--ui-col-error);
-  }
-
-  &__dock {
-    position: absolute;
-    top: 1px;
-    width: var(--ui-line-height);
-    height: var(--ui-line-height);
-    text-align: center;
-
-    &_left {
-      left: 5px;
-    }
-
-    &_right {
-      right: 5px;
-    }
-  }
-
   &__input {
-    @include ui-base();
-    @include ui-can-fill();
-    @include ui-can-text();
-    @include ui-can-disabled();
-    @include ui-can-error(var(--ui-einput-color), var(--ui-col-error));
-
-    width: var(--ui-input-width);
-    caret-color: var(--ui-input-caret-color);
-    color: var(--ui-input-color);
-    padding: var(--ui-input-padding);
-    border-bottom: var(--ui-input-border-bottom);
-    background: var(--ui-input-background);
-    transition-property: var(--ui-input-transition-property);
-    font-size: var(--ui-input-font-size);
-    line-height: var(--ui-input-line-height);
-    border: var(--ui-input-border);
-    border-bottom: var(--ui-input-border-bottom);
-    border-color: var(--ui-input-border-color);
-
+    background: var(--ui-text-background);
     display: block;
     flex-grow: 1;
-    padding: var(--ui-input-padding);
     max-width: 100%;
-    position: relative;
-    padding: 1.5rem 0 0.6rem 0;
-    font-size: 1.8rem;
-    line-height: 1.25;
-    padding: 1.5rem 0 0.6rem 0;
 
-    &:placeholder-shown{
-      color: transparent;
-    }
-
-    &:focus + span, &:not(:placeholder-shown) + span {
-      top: 0;
-      font-size: 1.2rem;
-    }
-
-    &[fill="none"] {
-      padding-left: 0;
-    }
+    @include ui-base();
+    @include ui-can-text();
     @include reset-number-appearance();
-  }
 
-  &__dock_right ~ &__input {
-    padding-right: calc(var(--ui-line-height) * 1.1);
-  }
+    font-size: var(--ui-text-font-size);
+    line-height: var(--ui-text-font-size);
 
-  &__dock_left ~ &__input {
-    padding-left: calc(var(--ui-line-height) * 1.1);
+    border-top: var(--ui-text-border-top);
+    border-bottom: var(--ui-text-border-bottom);
+    border-left: var(--ui-text-border-left);
+    border-right: var(--ui-text-border-right);
+    border-radius: var(--ui-text-border-radius);
+
+    padding: (
+      var(--ui-text-padding-top) var(--ui-text-padding-right) var(--ui-text-padding-bottom) var(--ui-text-padding-left)
+    );
+
+    box-shadow: var(--ui-text-box-shadow);
+
+    &:hover {
+      border-color: var(--ui-text-border-color-hover);
+      box-shadow: var(--ui-text-box-shadow-hover);
+    }
+
+    &:focus {
+      border-color: var(--ui-text-border-color-focused);
+      box-shadow: var(--ui-text-box-shadow-focused);
+    }
+
+    & ~ .ui-text__error-msg {
+      display: block;
+      width: 100%;
+
+      color: var(--ui-col-error);
+      font-size: var(--ui-text-err-msg-font-size);
+      line-height: var(--ui-text-err-msg-font-size);
+      padding-top: var(--ui-text-err-msg-padding-top);
+    }
+
+    &[is-required] ~ .ui-text__label::after {
+      color: var(--ui-text-required-star-color);
+      content: '*';
+      position: relative;
+    }
   }
 
   &__label {
     display: block;
-    width: 100%;
-    clear: both;
-    color: var(--ui-label-color);
-    margin-top: var(--ui-label-margin-top);
-    font-size: var(--ui-label-font-size);
-    line-height: var(--ui-label-line-height);
+    width: auto;
 
-    &_required-star {
-      @include ui-can-text();
-      @include ui-can-fill();
+    pointer-events: none;
+    white-space: nowrap;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
-      font-size: inherit;
-      padding: var(--input-padding);
-      pointer-events: none;
-      visibility: visible;
-      line-height: inherit;
-      position: absolute;
-      top: 0;
-      left: 0;
-
-      // &::after {
-      //   content: "*";
-      //   display: inline;
-      //   color: var(--ui-col-error);
-      //   margin-left: -1ch * 0.3;
-      // }
-    }
-  }
-
-  &__span {
     position: absolute;
-    transition: all 0.2s;
-    top: 1.5rem;
-    font-size: 1.8rem;
-    line-height: 1;
-    color: var(--ui-col-text);
 
-    &:focus {
-      outline: none;
-      transition: all 0.2s;
-      font-size: 1.2rem;
-      line-height: 1;
+    top: var(--ui-text-label-top);
+    left: var(--ui-text-label-left);
+    background: var(--ui-text-label-background);
+    color: var(--ui-text-label-color);
+    font-size: var(--ui-text-label-font-size);
+    line-height: var(--ui-text-label-font-size);
+    padding: var(--ui-text-label-padding);
+    transition: var(--ui-text-label-transition-duration);
+
+    .ui-text__input:focus ~ & {
+      padding: var(--ui-text-label-padding-focused);
+      font-size: var(--ui-text-label-font-size-focused);
+      line-height: var(--ui-text-label-font-size-focused);
+      top: var(--ui-text-label-top-focused);
+      left: var(--ui-text-label-left-focused);
     }
-  }
 
-  &__input[is-required="true"]:placeholder-shown ~ &__label_required-star {
-    visibility: visible;
+    .ui-text__input:not(:placeholder-shown) ~ & {
+      padding: var(--ui-text-label-padding-filled);
+      font-size: var(--ui-text-label-font-size-filled);
+      line-height: var(--ui-text-label-font-size-filled);
+      top: var(--ui-text-label-top-filled);
+      left: var(--ui-text-label-left-filled);
+    }
   }
 }
-
 </style>
