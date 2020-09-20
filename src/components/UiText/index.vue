@@ -1,6 +1,8 @@
 <template>
-  <div class="ui-text" :for="inputId">
-    <span class="ui-text__dock ui-text__dock_left" v-if="hasSlot('dock-left')">
+  <div class="ui-text"
+      :for="inputId">
+    <span class="ui-text__dock ui-text__dock_left"
+          v-if="hasSlot('dock-left')">
       <!--
         @slot Optional slot left from the input.
         Will npt be rendered if empty.
