@@ -7,7 +7,7 @@
         'ui-photo-field__label--error': errorMessage
       }"
     >
-      {{ labelMain }}
+      <slot>{{ labelMain }}</slot>
     </div>
 
     <div
@@ -46,7 +46,7 @@
 
         <div
           class="ui-photo-field__selected-file">
-          {{ labelFileName }}
+          <slot> {{ labelFileName }} </slot>
         </div>
       </template>
 
@@ -66,15 +66,15 @@
                 : 'ui-photo-field__title'"
             >
               <template v-if="isFileDragged">
-                {{ labelDraged }}
+                <slot> {{ labelDraged }} </slot>
               </template>
 
               <template v-else-if="document">
-                {{ labelDraged }}
+                <slot> {{ labelDraged }} </slot>
               </template>
 
               <template v-else>
-                {{ labelTitle }}
+                <slot> {{ labelTitle }} </slot>
               </template>
             </p>
 
@@ -105,6 +105,9 @@
         @dragenter="isFileDragged = true"
         @dragleave="isFileDragged = false"
         @drop="isFileDragged = false"
+        @err-invalid-file-size="isValidFileSize"
+        @err-invalid-file-type="isValidFileType"
+        @err-invalid-file-dimensions="isValidFileDimensions"
       >
     </div>
 
@@ -112,7 +115,7 @@
       class="ui-photo-field__err-mes"
       v-if="errorMessage"
     >
-      {{ errorMessage }}
+      <slot> {{ errorMessage }} </slot>
     </div>
   </div>
 </template>
@@ -182,18 +185,18 @@ export default {
     async onChange (event) {
       try {
         const file = FileUtil.getFileFromEvent(event)
-        if (await this.validateFile(file)) {
-          this.documentUrl = await FileUtil.getDataUrl(file)
-          this.document = Document({
-            mimeType: file.type,
-            type: this.documentType,
-            name: file.name,
-            file: file,
-          })
-          this.$emit('input', this.document)
-        } else {
-          this.$emit('error')
-        }
+        // if (await this.validateFile(file)) {
+        this.documentUrl = await FileUtil.getDataUrl(file)
+        this.document = new Document({
+          mimeType: file.type,
+          type: this.documentType,
+          name: file.name,
+          file: file,
+        })
+        this.$emit('input', this.document)
+        // } else {
+        //   this.$emit('error')
+        // }
       } catch (e) {
         if (e instanceof FileNotPresentInEventError) {
           this.reset()
@@ -212,23 +215,23 @@ export default {
       this.$emit('input', this.document)
     },
 
-    async validateFile (file) {
-      if (!this.isValidFileType(file)) {
-        this.$emit('error')
-        return false
-      }
+    // async validateFile (file) {
+    //   if (!this.isValidFileType(file)) {
+    //     this.$emit('error')
+    //     return false
+    //   }
 
-      if (!this.isValidFileSize(file)) {
-        this.$emit('error')
-        return false
-      }
+    //   if (!this.isValidFileSize(file)) {
+    //     this.$emit('error')
+    //     return false
+    //   }
 
-      if (!(await this.isValidFileDimensions(file))) {
-        this.$emit('error')
-        return false
-      }
-      return true
-    },
+    //   if (!(await this.isValidFileDimensions(file))) {
+    //     this.$emit('error')
+    //     return false
+    //   }
+    //   return true
+    // },
 
     async isValidFileDimensions (file) {
       if (!file.type.includes('image')) {

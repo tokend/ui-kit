@@ -2,6 +2,8 @@
 @import "vars";
 @import "fonts";
 @import "flags";
+@import '~@mdi/font/css/materialdesignicons.css';
+
 
 html {
   font-size: var(--ui-root-font-size);

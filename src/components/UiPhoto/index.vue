@@ -7,7 +7,6 @@
         :value="originImg"
         :note="note"
         :document-type="documentType"
-        :label="label"
         :min-width="minWidth"
         :min-height="minHeight"
         :disabled="disabled"
@@ -74,11 +73,10 @@
 </template>
 
 <script>
-import FileField from './FileField'
+import PhotoField from './PhotoField'
 import { clipperBasic } from 'vuejs-clipper'
 import Vue from 'vue'
 import VueRx from 'vue-rx'
-import '@mdi/font/css/materialdesignicons.css'
 import { Document } from '@tokend/js-sdk'
 
 Vue.use(VueRx)
@@ -88,7 +86,7 @@ const IMAGE_FILE_EXTENSIONS = ['jpg', 'png', 'jpeg']
 
 export default {
   components: {
-    'ui-photo-field': FileField,
+    'ui-photo-field': PhotoField,
     clipperBasic,
   },
   props: {
@@ -134,7 +132,7 @@ export default {
       this.resultURL = canvas.toDataURL(this.originImg.mimeType, 1)
 
       const blob = this.dataURItoBlob(this.resultURL)
-      this.originImg = Document({
+      this.originImg = new Document({
         mimeType: blob.type,
         name: 'new__' + this.originImg.name,
         type: this.documentType,
