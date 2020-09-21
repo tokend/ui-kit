@@ -13,6 +13,8 @@ export default {
      */
     fill: { type: String, default: 'solid' },
 
+    fullWidth: { type: Boolean, default: false },
+
     /**
      * Button type attribute
      */
@@ -45,7 +47,11 @@ export default {
 
     return createElement(
       'div',
-      { ...otherData, class: [otherData.class, 'ui-button'] },
+      {
+        ...otherData,
+        attrs: { 'is-full-width': props.fullWidth },
+        class: [otherData.class, 'ui-button'],
+      },
       [buttonElement]
     )
   }
@@ -67,21 +73,26 @@ export default {
   --ui-button-text-align: center;
   --ui-button-padding: 0;
   --ui-button-font-size: var(--ui-font-size);
-  --ui-button-width: 20rem;
+  --ui-button-max-width: 20rem;
   --ui-button-font-weight: 700;
   --ui-button-border-radius: var(--ui-border-radius);
   --ui-button-box-shadow: var(--ui-box-shadow);
-  --ui-button-line-height: var(--ui-line-height);
+  --ui-button-line-height: var(--ui-button-font-size);
 
   position: unset;
+  width: auto;
+
+  &[is-full-width] {
+    width: 100%;
+  }
 
   &__button {
     @include ui-base(block);
     @include ui-can-fill(var(--ui-button-background-primary-color),
-     var(--ui-button-background-secondary-color), var(--ui-button-box-shadow));
+      var(--ui-button-background-secondary-color), var(--ui-button-box-shadow));
     @include ui-can-disabled();
     @include ui-can-click(var(--ui-button-active-transition),
-     var(--ui-button-active-transform));
+      var(--ui-button-active-transform));
 
     -webkit-user-select: none;
     user-select: none;
@@ -95,7 +106,7 @@ export default {
     border-radius: var(--ui-button-border-radius);
     box-shadow: var(--ui-button-box-shadow);
     color: var(--ui-button-color);
-    width: var(--ui-button-width);
+    width: 100%;
     border: var(--ui-button-border);
     line-height: var(--ui-button-line-height);
     text-align: var(--ui-button-text-align);

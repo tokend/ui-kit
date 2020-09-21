@@ -139,6 +139,8 @@ export default {
 @import "../../styles/all";
 
 .ui-text {
+  --ui-text-color: var(--ui-col-primary);
+  --ui-text-color-error: var(--ui-text-color);
   --ui-text-font-size: var(--ui-font-size);
   --ui-text-background: #fff;
 
@@ -150,23 +152,46 @@ export default {
   --ui-text-border-color: var(--ui-col-secondary);
   --ui-text-border-color-hover: var(--ui-text-border-color);
   --ui-text-border-color-focused: var(--ui-text-border-color);
+  --ui-text-border-color-error: var(--ui-text-border-color);
+  --ui-text-border-color-error–hover: var(--ui-text-border-color-hover);
+  --ui-text-border-color-error–focused: var(--ui-text-border-color-focused);
+
   --ui-text-border-top-width: 1px;
   --ui-text-border-bottom-width: 1px;
   --ui-text-border-left-width: 1px;
   --ui-text-border-right-width: 1px;
 
-  --ui-text-border-top: var(--ui-text-border-top-width) solid var(--ui-text-border-color);
-  --ui-text-border-left: var(--ui-text-border-left-width) solid var(--ui-text-border-color);
-  --ui-text-border-right: var(--ui-text-border-right-width) solid var(--ui-text-border-color);
-  --ui-text-border-bottom: var(--ui-text-border-bottom-width) solid var(--ui-text-border-color);
+  --ui-text-border-style: solid;
+
+  --ui-text-border-top:
+    var(--ui-text-border-top-width)
+    var(--ui-text-border-style)
+    var(--ui-text-border-color)
+  ;
+  --ui-text-border-left:
+    var(--ui-text-border-left-width)
+    var(--ui-text-border-style)
+    var(--ui-text-border-color)
+  ;
+  --ui-text-border-right:
+    var(--ui-text-border-right-width)
+    var(--ui-text-border-style)
+    var(--ui-text-border-color)
+  ;
+  --ui-text-border-bottom:
+    var(--ui-text-border-bottom-width)
+    var(--ui-text-border-style)
+    var(--ui-text-border-color)
+  ;
 
   --ui-text-border-radius: var(--ui-border-radius);
 
   --ui-text-label-background: var(--ui-text-background);
   --ui-text-label-padding: 0;
   --ui-text-label-color: var(--ui-col-secondary);
-  --ui-text-label-color-hover: var(--ui-col-primary);
+  --ui-text-label-color-error: var(--ui-text-label-color);
   --ui-text-label-color-focused: var(--ui-col-primary);
+  --ui-text-label-color-filled: var(--ui-col-primary);
   --ui-text-label-font-size: var(--ui-text-font-size);
   --ui-text-label-transition-duration: 300ms;
   --ui-text-label-top: calc(
@@ -182,7 +207,9 @@ export default {
   --ui-text-label-padding-focused: 0 0.25rem;
   --ui-text-label-left-focused: var(--ui-text-label-left);
   --ui-text-label-font-size-focused: 1.2rem;
-  --ui-text-label-top-focused: calc(var(--ui-text-label-font-size-focused) / -2);
+  --ui-text-label-top-focused: calc(
+    var(--ui-text-label-font-size-focused) / -2
+  );
 
   --ui-text-label-padding-filled: var(--ui-text-label-padding-focused);
   --ui-text-label-left-filled: var(--ui-text-label-left-focused);
@@ -192,6 +219,9 @@ export default {
   --ui-text-box-shadow: none;
   --ui-text-box-shadow-hover: none;
   --ui-text-box-shadow-focused: 0 0 0 1px var(--ui-col-primary);
+  --ui-text-box-shadow-error: var(--ui-text-box-shadow);
+  --ui-text-box-shadow-error-hover: var(--ui-text-box-shadow-hover);
+  --ui-text-box-shadow-error-focused: var(--ui-text-box-shadow-focused);
 
   --ui-text-err-msg-font-size: 0.75em;
   --ui-text-err-msg-padding-top: 0.75rem;
@@ -205,6 +235,7 @@ export default {
   position: relative;
 
   &__input {
+    color: var(--ui-text-color);
     background: var(--ui-text-background);
     display: block;
     flex-grow: 1;
@@ -224,7 +255,10 @@ export default {
     border-radius: var(--ui-text-border-radius);
 
     padding: (
-      var(--ui-text-padding-top) var(--ui-text-padding-right) var(--ui-text-padding-bottom) var(--ui-text-padding-left)
+      var(--ui-text-padding-top)
+      var(--ui-text-padding-right)
+      var(--ui-text-padding-bottom)
+      var(--ui-text-padding-left)
     );
 
     box-shadow: var(--ui-text-box-shadow);
@@ -254,6 +288,26 @@ export default {
       content: '*';
       position: relative;
     }
+
+    &[is-error] {
+      box-shadow: var(--ui-text-box-shadow-error);
+      border-color: var(--ui-text-border-color-error);
+      color: var(--ui-text-color-error);
+
+      &:hover {
+        border-color: var(--ui-text-border-color-error–hover);
+        box-shadow: var(--ui-text-box-shadow-error-hover);
+      }
+
+      &:focus {
+        border-color: var(--ui-text-border-color-error–focused);
+        box-shadow: var(--ui-text-box-shadow-error-focused);
+      }
+    }
+
+    &[is-error] ~ .ui-text__label {
+      color: var(--ui-text-label-color-error);
+    }
   }
 
   &__label {
@@ -278,6 +332,7 @@ export default {
     transition: var(--ui-text-label-transition-duration);
 
     .ui-text__input:focus ~ & {
+      color: var(--ui-text-label-color-focused);
       padding: var(--ui-text-label-padding-focused);
       font-size: var(--ui-text-label-font-size-focused);
       line-height: var(--ui-text-label-font-size-focused);
@@ -286,6 +341,7 @@ export default {
     }
 
     .ui-text__input:not(:placeholder-shown) ~ & {
+      color: var(--ui-text-label-color-filled);
       padding: var(--ui-text-label-padding-filled);
       font-size: var(--ui-text-label-font-size-filled);
       line-height: var(--ui-text-label-font-size-filled);

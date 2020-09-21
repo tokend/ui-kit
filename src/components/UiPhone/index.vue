@@ -19,15 +19,13 @@
         'ui-phone__input-wrp': true,
         'ui-phone__input-wrp--focused': isFocused,
       }"
-      :look="look"
-      :fill="fill"
       :is-required="isRequired"
       :is-disabled-phone="isDisabled"
       :is-error="isError"
     >
       <ui-button
         fill="none"
-        :look="look"
+        look="secondary"
         class="ui-phone__country-dropdown-btn"
         :is-disabled-phone="isDisabled"
         @click="toggleCountriesDropdown"
@@ -58,28 +56,14 @@
       class="ui-phone__country-dropdown"
       v-if="isOpenCountries"
       v-on-clickaway="handleClickawayDirective"
-      :look="look"
-      :fill="fill"
     >
       <ui-text
-        fill="frame"
-        look="secondary"
         class="ui-phone__country-dropdown-filter"
         v-model="filter"
         :is-disabled-phone="isDisabled"
         :placeholder="searchPlaceholder"
         ref="searchFilter"
-      >
-        <ui-button
-          class="ui-phone__country-dropdown-filter-clear"
-          v-if="filter"
-          @click="filter = ''"
-          fill="none"
-          slot="dock-right"
-        >
-          x
-        </ui-button>
-      </ui-text>
+      />
 
       <div class="ui-phone__country-dropdown-scroll">
         <ui-button
@@ -148,16 +132,6 @@ export default {
     value: { type: String, default: '' },
     /** Regular placeholder */
     placeholder: { type: String, default: MASK.split('#').join('-') },
-    /**
-     * Set basic appearance of the element.<br>
-     * @value: < default | primary | secondary | alt  >
-     */
-    look: { type: String, default: 'default' },
-    /**
-     * Set basic fill of the button.<br>
-     * @value: < solid | frame >
-     */
-    fill: { type: String, default: 'frame' },
     /** Mark field as required (visually) */
     isRequired: { type: Boolean, default: false },
     /** Mark field as invalid (visually) */
@@ -334,25 +308,74 @@ export default {
 @import "../../styles/all";
 
 .ui-phone {
-  --ui-phone-padding: 0 1rem 0 0;
+  --ui-phone-background: #fff;
+  --ui-phone-font-size: var(--ui-font-size);
 
-  --ui-phone-border-color: var(--ui-col-primary);
-  --ui-phone-border-color-focused: var(--ui-col-primary-darken);
+  --ui-phone-padding-right: 1.2rem;
+  --ui-phone-padding-left: 1.2rem;
+  --ui-phone-padding-bottom: 1rem;
+  --ui-phone-padding-top: 1rem;
+  --ui-phone-gap: 0.75rem;
 
-  --ui-phone-label-text-color: var(--ui-col-primary);
+  --ui-phone-border-color: var(--ui-col-secondary);
+  --ui-phone-border-color-hover: var(--ui-phone-border-color);
+  --ui-phone-border-color-focused: var(--ui-phone-border-color);
+  --ui-phone-border-color-error: var(--ui-phone-border-color);
+  --ui-phone-border-color-error–hover: var(--ui-phone-border-color-hover);
+  --ui-phone-border-color-error–focused: var(--ui-phone-border-color-focused);
+
+  --ui-phone-border-style: solid;
+  --ui-phone-border-top-width: 1px;
+  --ui-phone-border-bottom-width: 1px;
+  --ui-phone-border-left-width: 1px;
+  --ui-phone-border-right-width: 1px;
+  --ui-phone-border-top:
+    var(--ui-phone-border-top-width)
+    var(--ui-phone-border-style)
+    var(--ui-phone-border-color)
+  ;
+  --ui-phone-border-left:
+    var(--ui-phone-border-left-width)
+    var(--ui-phone-border-style)
+    var(--ui-phone-border-color)
+  ;
+  --ui-phone-border-right:
+    var(--ui-phone-border-right-width)
+    var(--ui-phone-border-style)
+    var(--ui-phone-border-color)
+  ;
+  --ui-phone-border-bottom:
+    var(--ui-phone-border-bottom-width)
+    var(--ui-phone-border-style)
+    var(--ui-phone-border-color)
+  ;
+  --ui-phone-border-radius: var(--ui-border-radius);
+
+  --ui-phone-box-shadow: none;
+  --ui-phone-box-shadow-hover: none;
+  --ui-phone-box-shadow-focused: 0 0 0 1px var(--ui-col-primary);
+  --ui-phone-box-shadow-error: --ui-phone-box-shadow;
+  --ui-phone-box-shadow-error-hover: var(--ui-phone-box-shadow-hover);
+  --ui-phone-box-shadow-error-focused: var(--ui-phone-box-shadow-focused);
+
+  --ui-phone-label-background: var(--ui-phone-background);
+  --ui-phone-label-padding: 0 0.25rem;
+  --ui-phone-label-color: var(--ui-col-primary);
+  --ui-phone-label-color-error: var(--ui-phone-label-color);
   --ui-phone-label-font-size: 0.75em;
-
-  --ui-phone-border-top: none;
-  --ui-phone-border-left: none;
-  --ui-phone-border-right: none;
-  --ui-phone-border-bottom: 1px solid var(--ui-phone-border-color);
+  --ui-phone-label-top: calc(var(--ui-phone-label-font-size) / -2);;
+  --ui-phone-label-left: calc(
+    var(--ui-phone-padding-left) +
+    var(--ui-phone-border-left-width)
+  );
 
   --ui-phone-button-text-color: var(--ui-col-secondary);
   --ui-phone-dropdown-shadow: var(--ui-box-shadow);
   --ui-phone-err-msg-font-size: 0.75em;
   --ui-phone-err-msg-padding-top: 0.4rem;
 
-  --ui-phone-err-color: var(--ui-phone-button-text-color);
+  --ui-phone-required-star-color: var(--ui-col-error);
+
   @include ui-wrap(flex);
 
   flex-wrap: wrap;
@@ -360,41 +383,98 @@ export default {
 
   &__label {
     display: block;
-    width: 100%;
+    width: auto;
 
-    color: var(--ui-phone-label-text-color);
+    color: var(--ui-phone-label-color);
     font-size: var(--ui-phone-label-font-size);
     line-height: var(--ui-phone-label-font-size);
+    background: var(--ui-phone-label-background);
+    padding: var(--ui-phone-label-padding);
 
-    &--error {
-      color: var(--ui-col-error);
-    }
+    position: absolute;
+    top: var(--ui-phone-label-top);
+    left: var(--ui-phone-label-left);
   }
 
   &__input-wrp {
     @include ui-base(flex);
-    @include ui-can-fill();
     @include ui-can-text();
     @include ui-can-disabled();
-    @include ui-can-error();
-    border: var(--ui-phone-border-top);
+
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: min-content 1fr;
+    gap: var(--ui-phone-gap);
+    width: 100%;
+    padding: (
+      var(--ui-phone-padding-top)
+      var(--ui-phone-padding-right)
+      var(--ui-phone-padding-bottom)
+      var(--ui-phone-padding-left)
+    );
+
+    border-top: var(--ui-phone-border-top);
     border-left: var(--ui-phone-border-left);
     border-right: var(--ui-phone-border-right);
     border-bottom: var(--ui-phone-border-bottom);
+    border-radius: var(--ui-phone-border-radius);
+    box-shadow: var(--ui-phone-box-shadow);
 
-    &--focused {
-      border-color: var(--ui-phone-border-color-focused) !important;
+    &, & /deep/ input {
+      font-size: var(--ui-phone-font-size);
+      line-height: var(--ui-phone-font-size);
     }
 
-    padding: var(--ui-phone-padding);
-    width: 100%;
+    &:hover {
+      border-color: var(--ui-phone-border-color-hover);
+      box-shadow: var(--ui-phone-box-shadow-hover);
+    }
 
-    @include respond-below(xs) {
-      max-height: var(--ui-line-height);
+    &--focused {
+      &, &:hover {
+        border-color: var(--ui-phone-border-color-focused);
+        box-shadow: var(--ui-phone-box-shadow-focused);
+      }
+    }
+
+    &[is-error] {
+      box-shadow: var(--ui-phone-box-shadow-error);
+      border-color: var(--ui-phone-border-color-error);
+
+      &:hover {
+        border-color: var(--ui-phone-border-color-error–hover);
+        box-shadow: var(--ui-phone-box-shadow-error-hover);
+      }
+
+      .ui-phone__input {
+        @include placeholder() {
+          color: var(--ui-phone-label-color-error);
+        }
+      }
+    }
+
+    &--focused[is-error] {
+      &, &:hover {
+        border-color: var(--ui-phone-border-color-error–focused);
+        box-shadow: var(--ui-phone-box-shadow-error-focused);
+      }
+    }
+
+    &[is-error] ~ .ui-phone__label {
+      color: var(--ui-phone-label-color-error);
+    }
+
+    &[is-required] ~ .ui-phone__label::after {
+      color: var(--ui-phone-required-star-color);
+      content: '*';
+      position: relative;
     }
   }
 
   &__country-dropdown-btn {
+    --ui-button-width: auto !important;
+    --ui-button-line-height: var(--ui-phone-font-size) !important;
+
     display: flex;
     align-items: center;
     white-space: nowrap;
@@ -402,25 +482,11 @@ export default {
     & /deep/ .ui-button {
       display: flex;
       align-content: center;
-
-      &__button {
-        color: var(--ui-phone-button-text-color);
-
-        position: relative;
-        height: var(--ui-line-height);
-        display: block;
-        padding: 0 0.5em 0 38px;
-        text-align: left;
-      }
     }
 
     & /deep/ .ui-flag {
-      position: absolute;
-      left: 0;
-      top: 50%;
+      // TODO: vars:
       border-radius: 3px;
-      margin: 0 0.25em 0 0.25em;
-      transform: translateY(-50%);
       box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
     }
   }
@@ -434,8 +500,6 @@ export default {
     padding: 1em;
     background: var(--ui-col-bg);
     box-shadow: var(--ui-phone-dropdown-shadow);
-
-    @include ui-can-fill();
 
     @include respond-below(sm) {
       position: static;
@@ -523,7 +587,6 @@ export default {
   }
 
   &__input {
-    @include ui-can-fill();
     @include ui-can-text();
 
     display: block;
@@ -538,6 +601,10 @@ export default {
     @include respond-below(xs) {
       margin-right: 0.4em;
     }
+
+    @include placeholder() {
+      color: var(--ui-phone-label-color);
+    }
   }
 
   // HACK: Remove input autofill background
@@ -546,24 +613,6 @@ export default {
   input:-webkit-autofill:focus,
   input:-webkit-autofill:active {
     -webkit-box-shadow: 0 -5.5em 0 0 var(--ui-col-bg) inset !important;
-  }
-
-  &__input-wrp[fill="solid"] {
-    &[look="primary"] {
-      color: var(--ui-col-primary-contrast);
-    }
-
-    &[look="secondary"] {
-      color: var(--ui-col-secondary-contrast);
-    }
-
-    &[is-error] {
-      color: var(--ui-col-error);
-    }
-
-    &[is-disabled-phone] {
-      color: var(--ui-col-disabled);
-    }
   }
 
   &__error-msg {
