@@ -119,14 +119,14 @@
 
 <script>
 import { FileUtil, FileNotPresentInEventError } from '@/utils/file.util'
-// import { DocumentContainer } from '@/utils/DocumentContainer'
+import { Document } from '@tokend/js-sdk'
 
 const MAX_FILE_MEGABYTES = 32
 const FILE_EXTENSIONS = ['jpg', 'png', 'jpeg', 'pdf']
 
 export default {
   props: {
-    value: { type: Object, default: null },
+    value: { type: Document, default: null },
     labelMain: { type: String, default: 'Logo (Optional)' },
     labelTitle: { type: String, default: 'Drag a file here or click to browse' },
     labelFileName: { type: String, default: 'Selected file: ' },
@@ -184,7 +184,7 @@ export default {
         const file = FileUtil.getFileFromEvent(event)
         if (await this.validateFile(file)) {
           this.documentUrl = await FileUtil.getDataUrl(file)
-          this.document = Object({
+          this.document = Document({
             mimeType: file.type,
             type: this.documentType,
             name: file.name,

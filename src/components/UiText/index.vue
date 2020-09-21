@@ -1,8 +1,10 @@
 <template>
-  <div class="ui-text"
-      :for="inputId">
-    <span class="ui-text__dock ui-text__dock_left"
-          v-if="hasSlot('dock-left')">
+  <div
+    class="ui-text"
+    :for="inputId">
+    <span
+      class="ui-text__dock ui-text__dock_left"
+      v-if="hasSlot('dock-left')">
       <!--
         @slot Optional slot left from the input.
         Will npt be rendered if empty.
@@ -45,7 +47,7 @@
 
     <span
       class="ui-text__label"
-      v-if="hasSlot('default') && (!hasSlot('error') || !isError)" >
+      v-if="hasSlot('default') && (!hasSlot('error') || !isError)">
       <!-- @slot Use this slot to place the text field label content -->
       <slot />
     </span>

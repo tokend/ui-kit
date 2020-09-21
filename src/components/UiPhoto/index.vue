@@ -79,9 +79,9 @@ import { clipperBasic } from 'vuejs-clipper'
 import Vue from 'vue'
 import VueRx from 'vue-rx'
 import '@mdi/font/css/materialdesignicons.css'
-Vue.use(VueRx)
+import { Document } from '@tokend/js-sdk'
 
-// import { DocumentContainer } from '@/js/helpers/DocumentContainer'
+Vue.use(VueRx)
 
 const MAX_FILE_MEGABYTES = 32
 const IMAGE_FILE_EXTENSIONS = ['jpg', 'png', 'jpeg']
@@ -92,7 +92,7 @@ export default {
     clipperBasic,
   },
   props: {
-    value: { type: Object, default: null },
+    value: { type: Document, default: null },
     labelMain: { type: String, default: 'Logo (Optional)' },
     labelSave: { type: String, default: 'Save' },
     labelCancel: { type: String, default: 'Cancel' },
@@ -105,6 +105,7 @@ export default {
     ratio: { type: Number, default: 1 },
     disabled: { type: Boolean, default: false },
   },
+
   data () {
     return {
       IMAGE_FILE_EXTENSIONS,
@@ -133,7 +134,7 @@ export default {
       this.resultURL = canvas.toDataURL(this.originImg.mimeType, 1)
 
       const blob = this.dataURItoBlob(this.resultURL)
-      this.originImg = Object({
+      this.originImg = Document({
         mimeType: blob.type,
         name: 'new__' + this.originImg.name,
         type: this.documentType,
