@@ -1,6 +1,10 @@
 <template>
-  <div class="ui-text" :for="inputId">
-    <span class="ui-text__dock ui-text__dock_left" v-if="hasSlot('dock-left')">
+  <div
+    class="ui-text"
+    :for="inputId">
+    <span
+      class="ui-text__dock ui-text__dock_left"
+      v-if="hasSlot('dock-left')">
       <!--
         @slot Optional slot left from the input.
         Will npt be rendered if empty.
@@ -43,7 +47,8 @@
 
     <span
       class="ui-text__label"
-      v-if="hasSlot('default') && (!hasSlot('error') || !isError)">
+      v-if="hasSlot('default') && (!hasSlot('error') || !isError)"
+    >
       <!-- @slot Use this slot to place the text field label content -->
       <slot />
     </span>
@@ -59,7 +64,7 @@
 
 <script>
 export default {
-  name: 'UiText',
+  name: 'UiTex',
   inheritAttrs: false,
   props: {
     /** Regular value */
@@ -129,7 +134,6 @@ export default {
       } else if (this.min !== '' && Number(value) < Number(this.min)) {
         result = this.min
       }
-
       return result
     },
 
@@ -137,7 +141,6 @@ export default {
       if (!this.step) {
         return value
       }
-
       let precision
       try {
         precision = String(this.step)
@@ -157,7 +160,6 @@ export default {
       } else {
         result = String(value).split(/\.|,/)[0]
       }
-
       return result
     },
   },
@@ -191,7 +193,7 @@ export default {
   flex-wrap: wrap;
   position: relative;
 
-  &__error>&__label{
+  &__error > &__label {
     color: var(--ui-col-error);
   }
 
@@ -241,11 +243,12 @@ export default {
     line-height: 1.25;
     padding: 1.5rem 0 0.6rem 0;
 
-    &:placeholder-shown{
+    &:placeholder-shown {
       color: transparent;
     }
 
-    &:focus + span, &:not(:placeholder-shown) + span {
+    &:focus + span,
+    &:not(:placeholder-shown) + span {
       top: 0;
       font-size: 1.2rem;
     }
@@ -315,5 +318,4 @@ export default {
     visibility: visible;
   }
 }
-
 </style>

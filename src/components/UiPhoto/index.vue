@@ -5,7 +5,6 @@
         v-if="!isEditorOpened"
         name="ui-photo-clipper-img"
         :value="originImg"
-        :note="note"
         :document-type="documentType"
         :min-width="minWidth"
         :min-height="minHeight"
@@ -14,6 +13,9 @@
         :max-size="maxSize"
         :error-message="errorMessage"
         @input="tryCropImg"
+        @err-invalid-file-size="$emit('err-invalid-file-size')"
+        @err-invalid-file-type="$emit('err-invalid-file-type')"
+        @err-invalid-file-dimensions="$emit('err-invalid-file-dimensions')"
       />
 
       <template v-if="isEditorOpened">
@@ -21,10 +23,10 @@
           class="ui-photo-clipper__label"
           :class="{
             'ui-photo-clipper__label--disabled': $attrs.disabled,
-            'ui-photo-clipper__label--error': errorMessage
+            'ui-photo-clipper__label--error': errorMessage,
           }"
         >
-          {{ labelMain }}
+          <slot name="mainLabel" />
         </div>
 
         <div class="ui-photo-clipper__editor">
@@ -38,8 +40,11 @@
             <div
               class="ui-photo-clipper__no-image"
               slot="placeholder">
+              ƒ
               <!-- eslint-disable max-len -->
-              <i class="mdi mdi-face-recognition ui-photo-clipper__icon ui-photo-clipper__reset-icon" />
+              <i
+                class="mdi mdi-face-recognition ui-photo-clipper__icon ui-photo-clipper__reset-icon"
+              />
               <!-- eslint-enable max-len -->
             </div>
           </clipper-basic>
@@ -53,7 +58,7 @@
               :disabled="disabled"
               @click="cropImg"
             >
-              {{ labelSave }}
+              <slot name="saveDragedPhoto" />
             </button>
             <button
               class="app__button-flat ui-photo-clipper__reset-btn"
@@ -63,7 +68,7 @@
               :disabled="disabled"
               @click="reset"
             >
-              {{ labelCancel }}
+              <slot name="cancelSavingDragedPhoto" />
             </button>
           </div>
         </div>
@@ -90,18 +95,38 @@ export default {
     clipperBasic,
   },
   props: {
-    value: { type: Document, default: null },
-    labelMain: { type: String, default: 'Logo (Optional)' },
-    labelSave: { type: String, default: 'Save' },
-    labelCancel: { type: String, default: 'Cancel' },
-    documentType: { type: String, default: 'default' },
-    maxSize: { type: Number, default: MAX_FILE_MEGABYTES },
-    note: { type: String, default: 'image (Max 32mb)' },
-    errorMessage: { type: String, default: undefined },
-    minWidth: { type: Number, default: 0 },
-    minHeight: { type: Number, default: 0 },
-    ratio: { type: Number, default: 1 },
-    disabled: { type: Boolean, default: false },
+    value: {
+      type: Document,
+      default: null,
+    },
+    documentType: {
+      type: String,
+      default: 'default',
+    },
+    maxSize: {
+      type: Number,
+      default: MAX_FILE_MEGABYTES,
+    },
+    errorMessage: {
+      type: String,
+      default: undefined,
+    },
+    minWidth: {
+      type: Number,
+      default: 0,
+    },
+    minHeight: {
+      type: Number,
+      default: 0,
+    },
+    ratio: {
+      type: Number,
+      default: 1,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   data () {
@@ -128,7 +153,7 @@ export default {
       }
     },
     async cropImg () {
-      const canvas = this.$refs.clipper.clip()// call component's clip method
+      const canvas = this.$refs.clipper.clip() // call component's clip method
       this.resultURL = canvas.toDataURL(this.originImg.mimeType, 1)
 
       const blob = this.dataURItoBlob(this.resultURL)
@@ -153,23 +178,29 @@ export default {
       // doesn't handle URLEncoded DataURIs - see SO answer
       // #6850276 for code that does this
       let byteString = atob(dataURI.split(',')[1])
-      let mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+      let mimeString = dataURI
+        .split(',')[0]
+        .split(':')[1]
+        .split(';')[0]
       let ab = new ArrayBuffer(byteString.length)
       let ia = new Uint8Array(ab)
 
       for (let i = 0; i < byteString.length; i++) {
         ia[i] = byteString.charCodeAt(i)
       }
-      return new Blob([ab], { type: mimeString })
+      return new Blob([ab], {
+        type: mimeString,
+      })
     },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-@import '../../styles/all';
+@import "../../styles/all";
 
 $max-width: 40rem;
+
 .ui-photo-clipper {
   --ui-display: flex;
   --ui-justify-content: center;
@@ -183,6 +214,7 @@ $max-width: 40rem;
   --ui-app-button-flat-hover-background-color: #d3daf7;
 
   width: 100%;
+
   &__editor {
     display: var(--ui-display);
     flex-direction: column;
@@ -214,7 +246,7 @@ $max-width: 40rem;
     max-width: $max-width;
   }
 
-  &__reset-btn{
+  &__reset-btn {
     color: var(--ui-col-secondary);
   }
 
@@ -248,6 +280,7 @@ $max-width: 40rem;
       text-align: var(--ui-text-alight);
       min-height: 3.6rem;
       background-color: transparent;
+
       &[disabled] {
         color: var(--ui-col-secondary);
       }

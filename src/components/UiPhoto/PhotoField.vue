@@ -4,10 +4,12 @@
       class="ui-photo-field__label"
       :class="{
         'ui-photo-field__label--disabled': $attrs.disabled,
-        'ui-photo-field__label--error': errorMessage
+        'ui-photo-field__label--error': errorMessage,
       }"
     >
-      <slot>{{ labelMain }}</slot>
+      <slot name="mainLabel">
+        Logo (Optional)
+      </slot>
     </div>
 
     <div
@@ -15,7 +17,7 @@
       :class="{
         'ui-photo-field__content--disabled': $attrs.disabled,
         'ui-photo-field__content--error': errorMessage,
-        'ui-photo-field__content--highlighted': isFileDragged
+        'ui-photo-field__content--highlighted': isFileDragged,
       }"
     >
       <template v-if="document">
@@ -35,23 +37,24 @@
         >
           <img
             class="ui-photo-field__img-preview"
-            :src="documentUrl">
+            :src="documentUrl" />
         </div>
 
         <div
           v-else
           class="ui-photo-field__icon-preview-wrp">
-          <i class="mdi mdi-file ui-photo-field__icon-preview" />
+          <i
+            class="mdi mdi-file ui-photo-field__icon-preview" />
         </div>
 
-        <div
-          class="ui-photo-field__selected-file">
-          <slot> {{ labelFileName }} </slot>
+        <div class="ui-photo-field__selected-file">
+          <slot name="fileName">
+            Selected file
+          </slot>
         </div>
       </template>
 
-      <div
-        class="ui-photo-field__inner">
+      <div class="ui-photo-field__inner">
         <template v-if="!$attrs.disabled">
           <i
             v-if="!document"
@@ -61,35 +64,45 @@
 
           <div class="ui-photo-field__text">
             <p
-              :class="document
-                ? 'ui-photo-field__subtitle'
-                : 'ui-photo-field__title'"
+              :class="
+                document ? 'ui-photo-field__subtitle' : 'ui-photo-field__title'
+              "
             >
               <template v-if="isFileDragged">
-                <slot> {{ labelDraged }} </slot>
+                <slot
+                  name="labelDraged">
+                </slot>
               </template>
 
               <template v-else-if="document">
-                <slot> {{ labelDraged }} </slot>
+                <slot name="labelDraged">
+                  Drag another file or click to browse
+                </slot
+                >
               </template>
 
               <template v-else>
-                <slot> {{ labelTitle }} </slot>
+                <slot name="labelTitle">
+                  Drag a file here or click to browse
+                </slot>
               </template>
             </p>
 
             <div class="ui-photo-field__note">
-              {{ note || acceptedExtensions }}
+              <slot name="note">
+                image (Max 32mb)
+              </slot>
             </div>
           </div>
         </template>
 
-        <template v-else-if="!document">
+        <template
+          v-else-if="!document">
           <i class="mdi mdi-file-hidden ui-photo-field__icon" />
 
           <div class="ui-photo-field__text">
             <p class="ui-photo-field__title">
-              {{ 'ui-photo-field.no-file-selected-title' }}
+              {{ "No file selected" }}
             </p>
           </div>
         </template>
@@ -105,45 +118,57 @@
         @dragenter="isFileDragged = true"
         @dragleave="isFileDragged = false"
         @drop="isFileDragged = false"
-        @err-invalid-file-size="isValidFileSize"
-        @err-invalid-file-type="isValidFileType"
-        @err-invalid-file-dimensions="isValidFileDimensions"
-      >
+      />
     </div>
 
     <div
       class="ui-photo-field__err-mes"
-      v-if="errorMessage"
-    >
-      <slot> {{ errorMessage }} </slot>
+      v-if="hasSlot('error')">
+      <slot name="error" />
     </div>
   </div>
 </template>
 
 <script>
-import { FileUtil, FileNotPresentInEventError } from '@/utils/file.util'
+import { FileUtil, FileNotPresentInEventError } from '../../utils/file.util'
 import { Document } from '@tokend/js-sdk'
 
 const MAX_FILE_MEGABYTES = 32
-const FILE_EXTENSIONS = ['jpg', 'png', 'jpeg', 'pdf']
+const FILE_EXTENSIONS = ['jpg', 'png', 'jpeg']
 
 export default {
   props: {
-    value: { type: Document, default: null },
-    labelMain: { type: String, default: 'Logo (Optional)' },
-    labelTitle: { type: String, default: 'Drag a file here or click to browse' },
-    labelFileName: { type: String, default: 'Selected file: ' },
-    labelDraged: { type: String, default: 'Drag another file or click to browse' },
-    documentType: { type: String, default: 'default' },
-    fileExtensions: { type: Array, default: _ => FILE_EXTENSIONS },
-    maxSize: { type: Number, default: MAX_FILE_MEGABYTES },
-    note: { type: String, default: 'image (Max 32mb)' },
-    errorMessage: { type: String, default: undefined },
-    minWidth: { type: Number, default: 0 },
-    minHeight: { type: Number, default: 0 },
+    value: {
+      type: Document,
+      default: null,
+    },
+    documentType: {
+      type: String,
+      default: 'default',
+    },
+    fileExtensions: {
+      type: Array,
+      default: (_) => FILE_EXTENSIONS,
+    },
+    maxSize: {
+      type: Number,
+      default: MAX_FILE_MEGABYTES,
+    },
+    errorMessage: {
+      type: String,
+      default: undefined,
+    },
+    minWidth: {
+      type: Number,
+      default: 0,
+    },
+    minHeight: {
+      type: Number,
+      default: 0,
+    },
   },
 
-  data: _ => ({
+  data: (_) => ({
     document: null,
     isFileDragged: false,
     documentUrl: '',
@@ -161,20 +186,23 @@ export default {
 
     acceptedExtensions () {
       return this.fileExtensions
-        .map(item => `.${item.toUpperCase()}`)
+        .map((item) => `.${item.toUpperCase()}`)
         .join(', ')
     },
   },
   watch: {
-    'value': {
+    value: {
       handler (value) {
         this.document = value
         if (value) this.loadDocumentUrl(value)
       },
-      immediate: true
-    }
+      immediate: true,
+    },
   },
   methods: {
+    hasSlot (slot) {
+      return !!this.$slots[slot]
+    },
     async loadDocumentUrl (document) {
       if (document.key) {
         this.documentUrl = await document.getPrivateUrl()
@@ -185,24 +213,23 @@ export default {
     async onChange (event) {
       try {
         const file = FileUtil.getFileFromEvent(event)
-        // if (await this.validateFile(file)) {
-        this.documentUrl = await FileUtil.getDataUrl(file)
-        this.document = new Document({
-          mimeType: file.type,
-          type: this.documentType,
-          name: file.name,
-          file: file,
-        })
-        this.$emit('input', this.document)
-        // } else {
-        //   this.$emit('error')
-        // }
+        if (await this.validateFile(file)) {
+          this.documentUrl = await FileUtil.getDataUrl(file)
+          this.document = new Document({
+            mimeType: file.type,
+            type: this.documentType,
+            name: file.name,
+            file: file,
+          })
+          this.$emit('input', this.document)
+        } else {
+          this.$emit('error')
+        }
       } catch (e) {
         if (e instanceof FileNotPresentInEventError) {
           this.reset()
         } else {
-          console.error(e)
-          this.$emit('error')
+          this.$emit(e)
         }
         return false
       }
@@ -215,23 +242,23 @@ export default {
       this.$emit('input', this.document)
     },
 
-    // async validateFile (file) {
-    //   if (!this.isValidFileType(file)) {
-    //     this.$emit('error')
-    //     return false
-    //   }
+    async validateFile (file) {
+      if (!this.isValidFileType(file)) {
+        this.$emit('err-invalid-file-type')
+        return false
+      }
 
-    //   if (!this.isValidFileSize(file)) {
-    //     this.$emit('error')
-    //     return false
-    //   }
+      if (!this.isValidFileSize(file)) {
+        this.$emit('err-invalid-file-size')
+        return false
+      }
 
-    //   if (!(await this.isValidFileDimensions(file))) {
-    //     this.$emit('error')
-    //     return false
-    //   }
-    //   return true
-    // },
+      if (!(await this.isValidFileDimensions(file))) {
+        this.$emit('err-invalid-file-dimensions')
+        return false
+      }
+      return true
+    },
 
     async isValidFileDimensions (file) {
       if (!file.type.includes('image')) {
@@ -239,21 +266,25 @@ export default {
       }
       try {
         const img = await FileUtil.readImage(file)
-        return img.width >= this.minWidth &&
-          img.height >= this.minHeight
+        return img.width >= this.minWidth && img.height >= this.minHeight
       } catch (e) {
         return false
       }
     },
 
     isValidFileType (file) {
-      return Boolean(this.fileExtensions
-        .find(item => item.toUpperCase() === this.getFileExtension(file))
+      return Boolean(
+        this.fileExtensions.find(
+          (item) => item.toUpperCase() === this.getFileExtension(file)
+        )
       )
     },
 
     getFileExtension (file) {
-      return file.name.split('.').pop().toUpperCase()
+      return file.name
+        .split('.')
+        .pop()
+        .toUpperCase()
     },
 
     isValidFileSize (file) {
@@ -263,10 +294,11 @@ export default {
 }
 </script>
 
-<style lang='scss' scoped>
-@import '../../styles/all';
+<style lang="scss" scoped>
+@import "../../styles/all";
 
 $z-reset-btn: 1;
+
 .ui-photo-field {
   --ui-font-size: 1.2rem;
   --ui-width: 100%;
@@ -359,7 +391,7 @@ $z-reset-btn: 1;
   }
 
   &__content--highlighted {
-    background-color:  var(--ui-content-highlighted-background-color);
+    background-color: var(--ui-content-highlighted-background-color);
     border-color: var(--ui-content-highlighted-border-color);
   }
 
@@ -405,7 +437,7 @@ $z-reset-btn: 1;
   }
 
   &__selected-file {
-    color:  var(--ui-selected-file-color);
+    color: var(--ui-selected-file-color);
     font-size: var(--ui-font-size);
     margin-bottom: 2rem;
     word-break: break-all;
@@ -422,6 +454,10 @@ $z-reset-btn: 1;
     margin-top: 0.4rem;
     font-size: var(--ui-font-size);
     line-height: 1.25;
+  }
+
+  &__err-mes {
+    background-color: var(--ui-col-error);
   }
 }
 
@@ -444,7 +480,7 @@ $z-reset-btn: 1;
   color: var(--ui-col-primary);
 
   &:hover {
-    background-color: var( --ui-button-icon-hover-background-color);
+    background-color: var(--ui-button-icon-hover-background-color);
   }
 }
 
