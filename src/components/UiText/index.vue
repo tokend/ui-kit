@@ -64,7 +64,7 @@
 
 <script>
 export default {
-  name: 'UiTex',
+  name: 'UiText',
   inheritAttrs: false,
   props: {
     /** Regular value */
