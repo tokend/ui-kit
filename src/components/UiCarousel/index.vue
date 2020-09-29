@@ -2,8 +2,9 @@
   <div class="carousel">
     <div class="carousel__img-area">
       <template v-for="name of names">
-        <transition name="slide"
-          :key="name">
+        <transition
+                    name="slide"
+                    :key="name">
           <template v-if="current === name">
             <div class="carousel__img-wrp">
               <slot :name="name" />
@@ -47,9 +48,10 @@
 
     <div class="carousel__actions">
       <template v-for="name of names">
-        <button class="carousel__actions__button"
-          :key="name"
-          @click="current = name">
+        <button
+              class="carousel__actions__button"
+              :key="name"
+              @click="current = name">
           <slot name="page-button">
             <span
               :class="{
