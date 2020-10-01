@@ -48,7 +48,7 @@ export default {
       { ...otherData, class: [otherData.class, 'ui-button'] },
       [buttonElement]
     )
-  }
+  },
 }
 </script>
 
