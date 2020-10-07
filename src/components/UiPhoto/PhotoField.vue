@@ -8,7 +8,7 @@
       }"
     >
       <slot name="mainLabel">
-        Logo (Optional)
+        Your photo
       </slot>
     </div>
 
@@ -21,19 +21,10 @@
       }"
     >
       <template v-if="document">
-        <button
-          v-if="!$attrs.disabled"
-          :title="'ui-photo-field.reset-btn-hint'"
-          class="button_icon ui-photo-field__reset-btn"
-          type="button"
-          @click="reset"
-        >
-          <i class="mdi mdi-close ui-photo-field__reset-icon" />
-        </button>
-
         <div
           v-if="documentUrl && isImageSelected"
           class="ui-photo-field__img-preview-wrp"
+          @click="reset"
         >
           <img
             class="ui-photo-field__img-preview"
@@ -46,65 +37,14 @@
           <i
             class="mdi mdi-file ui-photo-field__icon-preview" />
         </div>
-
-        <div class="ui-photo-field__selected-file">
-          <slot name="fileName">
-            Selected file
-          </slot>
-        </div>
       </template>
 
       <div class="ui-photo-field__inner">
         <template v-if="!$attrs.disabled">
           <i
             v-if="!document"
-            class="mdi ui-photo-field__icon"
-            :class="isFileDragged ? 'mdi-file-plus' : 'mdi-upload'"
+            class="mdi ui-photo-field__icon mdi-camera"
           />
-
-          <div class="ui-photo-field__text">
-            <p
-              :class="
-                document ? 'ui-photo-field__subtitle' : 'ui-photo-field__title'
-              "
-            >
-              <template v-if="isFileDragged">
-                <slot
-                  name="labelDraged">
-                </slot>
-              </template>
-
-              <template v-else-if="document">
-                <slot name="labelDraged">
-                  Drag another file or click to browse
-                </slot
-                >
-              </template>
-
-              <template v-else>
-                <slot name="labelTitle">
-                  Drag a file here or click to browse
-                </slot>
-              </template>
-            </p>
-
-            <div class="ui-photo-field__note">
-              <slot name="note">
-                image (Max 32mb)
-              </slot>
-            </div>
-          </div>
-        </template>
-
-        <template
-          v-else-if="!document">
-          <i class="mdi mdi-file-hidden ui-photo-field__icon" />
-
-          <div class="ui-photo-field__text">
-            <p class="ui-photo-field__title">
-              {{ "No file selected" }}
-            </p>
-          </div>
         </template>
       </div>
 
@@ -324,13 +264,9 @@ $z-reset-btn: 1;
 
   &__label {
     color: var(--ui-label-color);
+    text-align: var(--ui-text-align);
     font-size: var(--ui-font-size);
     line-height: 1;
-  }
-
-  &__inner {
-    margin: 1rem 0;
-    overflow: hidden;
   }
 
   &__input {
@@ -345,26 +281,7 @@ $z-reset-btn: 1;
 
   &__icon {
     color: var(--ui-icon-color);
-    font-size: 4.2rem;
-  }
-
-  &__text {
-    display: var(--ui-display);
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  &__title {
-    color: var(--ui-title-color);
-    font-size: 1.8rem;
-    margin: 0;
-  }
-
-  &__note {
-    color: var(color-dark-grey-purple);
-    margin-top: 0.6rem;
-    font-size: var(--ui-font-size);
-    line-height: 2.2rem;
+    font-size: 7rem;
   }
 
   &__label--error {
@@ -372,15 +289,17 @@ $z-reset-btn: 1;
   }
 
   &__content {
-    margin-top: 0.6rem;
-    border: 0.2rem dashed var(--ui-content-border);
-    background-color: var(--ui-content-background-color);
-    border-radius: 0.4rem;
-    transition: 0.2s;
-    text-align: var(--ui-text-align);
+    display: var(--ui-display);
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+    width: 15rem;
+    height: 15rem;
     position: relative;
-    min-height: 9.8rem;
-
+    border-radius: 50%;
+    border: 0.2rem solid #c4c8cb;
+    background-color: var(--ui-content-background-color);
+    transition: 0.2s;
     &:not(.file-field__content--disabled):hover {
       border-color: var(--ui-content-border-color);
     }
@@ -401,52 +320,23 @@ $z-reset-btn: 1;
   }
 
   &__img-preview-wrp {
-    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
     width: var(--ui-width);
   }
 
   &__img-preview {
-    padding: 0 5rem;
+    border-radius: 50%;
     object-fit: contain;
-    height: 15rem;
-    margin: auto;
-  }
-
-  &__reset-btn {
-    position: var(--ui-position);
-    z-index: $z-reset-btn;
-    top: var(--ui-top);
-    right: var(--ui-right);
-    min-width: 3rem;
-    min-height: 3rem;
-    margin: 0.6rem;
-    color: var(--ui-col-secondary);
-  }
-
-  &__reset-icon {
-    font-size: 2.4rem;
-
-    &:before {
-      font-weight: var(--ui-font-weight);
-      vertical-align: middle;
-    }
+    width: 100%;
+    height: 100%;
   }
 
   &__icon-preview {
     font-size: 8rem;
-  }
-
-  &__selected-file {
-    color: var(--ui-selected-file-color);
-    font-size: var(--ui-font-size);
-    margin-bottom: 2rem;
-    word-break: break-all;
-    padding: 0 1rem;
-  }
-
-  &__subtitle {
-    color: var(--ui-selected-text-color);
-    font-size: 1.6rem;
   }
 
   &__err-mes {
@@ -454,33 +344,7 @@ $z-reset-btn: 1;
     margin-top: 0.4rem;
     font-size: var(--ui-font-size);
     line-height: 1.25;
-  }
-
-  &__err-mes {
     background-color: var(--ui-col-error);
-  }
-}
-
-.button_icon {
-  display: var(--ui-display);
-  justify-content: center;
-  align-items: center;
-  border: none;
-  padding: 0.8rem 1.6rem;
-  font-size: 1.4rem;
-  font-weight: var(--ui-font-weight);
-  text-align: var(--ui-text-align);
-  min-height: 3.6rem;
-  background-color: transparent;
-  padding: 0.5rem;
-  min-width: 3.6rem;
-  border-radius: 50%;
-  transition: 0.3s ease-out;
-  box-sizing: content-box;
-  color: var(--ui-col-primary);
-
-  &:hover {
-    background-color: var(--ui-button-icon-hover-background-color);
   }
 }
 
