@@ -28,7 +28,8 @@
         >
           <img
             class="ui-photo-field__img-preview"
-            :src="documentUrl" />
+            :src="documentUrl"
+          >
         </div>
 
         <div
@@ -58,7 +59,7 @@
         @dragenter="isFileDragged = true"
         @dragleave="isFileDragged = false"
         @drop="isFileDragged = false"
-      />
+      >
     </div>
 
     <div
