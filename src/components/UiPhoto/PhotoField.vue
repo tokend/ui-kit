@@ -342,7 +342,7 @@ $z-reset-btn: 1;
   &__icon-preview {
     font-size: 8rem;
   }
-  // CHANGE PREVIEW WRAPPER
+
   &__change-preview-wrp {
     position: absolute;
     display: var(--ui-display);
