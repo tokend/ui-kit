@@ -313,8 +313,8 @@ export default {
 
   --ui-phone-padding-right: 1.2rem;
   --ui-phone-padding-left: 1.2rem;
-  --ui-phone-padding-bottom: 1rem;
-  --ui-phone-padding-top: 1rem;
+  --ui-phone-padding-bottom: 0;
+  --ui-phone-padding-top: 0;
   --ui-phone-gap: 0.75rem;
 
   --ui-phone-border-color: var(--ui-col-secondary);
