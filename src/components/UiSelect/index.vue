@@ -491,12 +491,14 @@ export default {
 
 .ui-select {
   @include ui-wrap-soft(block);
+  position: relative;
+  margin: 2rem 0;
 
   &__wrap {
     @include ui-wrap(flex);
 
     flex-wrap: wrap;
-    width: 200px;
+    width: 100%;
   }
 
   &__dock {
@@ -525,10 +527,9 @@ export default {
   &__label {
     display: block;
     width: 100%;
-    clear: both;
-    line-height: 2;
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
+    line-height: 0.75rem;
+    padding-top: 0.4em;
+    font-size: 1.2rem;
 
     &_is-error {
       color: var(--ui-col-error);
@@ -543,15 +544,15 @@ export default {
 
       text-align: left;
       color: var(--ui-col-secondary);
-      font-weight: 200;
-      padding: 0 1.2rem;
 
       &[fill="none"] {
+        width: 100%;
         border-radius: 0;
         border-width: 0 0 0.1rem 0;
         border: 1px solid var(--ui-col-secondary);
         border-radius: var(--ui-border-radius);
         border-style: solid;
+        padding: 0 1rem;
         height: 100%;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -571,7 +572,7 @@ export default {
   }
 
   &__button-icon {
-    height: 5; //
+    height: 2; //
     border: 1px solid black; //
     margin-right: 0.4em;
 
@@ -581,6 +582,8 @@ export default {
   }
 
   &__button-lbl {
+    font-weight: 200;
+
     &_placeholder-required::after {
       content: "*";
       display: inline;
@@ -591,7 +594,7 @@ export default {
   }
 
   &__input {
-    margin: 0 0.75em 0.75em 0.75em;
+    margin: 0.75em;
 
     /deep/ .ui-text__input {
       background-color: #edeef1 !important;
@@ -627,11 +630,12 @@ export default {
     max-height: 45vh;
     background-color: transparent;
     box-shadow: black; //
-    border-radius: 1rem; //
-    top: 10; //
     margin-top: 3rem;
-    padding: 1em 0;
-    padding-top: 0;
+    border: 1px solid var(--ui-col-secondary);
+    border-top: none;
+    border-radius: var(--ui-border-radius);
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
 
     /*
       todo: this is not consistent behaviour, need to get rid of it
@@ -674,10 +678,6 @@ export default {
   }
 
   &__options {
-    border: 1px solid var(--ui-col-secondary);
-    border-top: none;
-    border-radius: var(--ui-border-radius);
-    padding: 1rem 0;
     &_sticky-filter {
       overflow: auto;
       max-height: 26vh;
@@ -733,6 +733,7 @@ export default {
 
     &-empty {
       color: var(--ui-col-error);
+      margin: 1rem;
     }
   }
 }

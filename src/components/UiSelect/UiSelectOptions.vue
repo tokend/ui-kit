@@ -30,9 +30,7 @@
           :class="{ 'ui-items__list-item__caret_open': item.expand }"
           v-if="!!item.children"
           @click.stop="$emit('nested-toggle', item)"
-        >
-          <ui-icon icon="arrow-right" />
-        </a>
+        />
       </a>
       <ui-select-options
         class="ui-items__sub"
@@ -80,6 +78,7 @@ export default {
   user-select: none;
   display: block;
   clear: both;
+  padding-bottom: 1rem;
 
   &__list-item {
     color: grey; //
@@ -105,25 +104,25 @@ export default {
     }
 
     &_is-parent {
-      padding-right: 10px; //
+      padding-right: 1rem;
     }
 
     &_active {
       outline: none;
       color: var(--ui-col-primary-contrast);
-      background-color: var(--ui-col-primary); //
+      background-color: var(--ui-col-primary);
       opacity: 0.8;
       font-weight: bold;
 
       &:hover {
-        background-color: var(--ui-col-primary); //
+        background-color: var(--ui-col-primary);
         color: var(--ui-col-primary-contrast);
       }
     }
 
     &_selected {
       color: black;
-      background-color: var(--ui-col-secondary); //
+      background-color: var(--ui-col-secondary);
       opacity: 0.8;
     }
 
@@ -138,19 +137,13 @@ export default {
       top: 0;
       bottom: 0;
       display: flex;
-      width: 200px; //
+      width: 20rem;
       align-items: center;
       text-align: center;
       justify-content: center;
       transform-origin: 50%;
       font-size: 0.8em;
       border-left: 1px solid transparent;
-
-      &_open {
-        /deep/ .ui-icon {
-          transform: rotateZ(90deg);
-        }
-      }
     }
   }
 
