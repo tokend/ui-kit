@@ -622,7 +622,7 @@ export default {
     &_sticky {
       position: sticky;
       top: 1em;
-      padding-bottom: 1em;
+      padding: 1em 0;
     }
   }
 
