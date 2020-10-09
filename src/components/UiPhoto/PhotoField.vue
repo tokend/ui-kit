@@ -302,9 +302,7 @@ $z-reset-btn: 1;
     border: 0.2rem solid #c4c8cb;
     background-color: var(--ui-content-background-color);
     transition: 0.2s;
-    &:not(.file-field__content--disabled):hover {
-      border-color: var(--ui-content-border-color);
-    }
+    overflow: hidden;
   }
 
   &__content:hover &__change-preview-wrp {
@@ -326,7 +324,7 @@ $z-reset-btn: 1;
   }
 
   &__img-preview-wrp {
-    display: flex;
+    display: var(--ui-display);
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -344,22 +342,24 @@ $z-reset-btn: 1;
   &__icon-preview {
     font-size: 8rem;
   }
-
+  // CHANGE PREVIEW WRAPPER
   &__change-preview-wrp {
     position: absolute;
-    display: flex;
+    display: var(--ui-display);
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 100%;
+    height: 5.5rem;
+    bottom: 0;
     color: var(--ui-label-color);
     font-size: var(--ui-font-size);
-    border-radius: 50%;
+    border-radius: 0 0 50% 50%;
     background: var(--ui-content-background-color);
     transition: 0.5s;
     opacity: 0;
   }
 
+  //......................
   &__err-mes {
     color: var(--ui-col-error);
     margin-top: 0.4rem;

@@ -16,7 +16,6 @@
         @err-invalid-file-type="$emit('err-invalid-file-type')"
         @err-invalid-file-dimensions="$emit('err-invalid-file-dimensions')"
       />
-
       <transition name="ui-photo-clipper__modal" v-if="isEditorOpened">
         <div class="ui-photo-clipper__modal-mask">
           <div class="ui-photo-clipper__modal-wrapper">
@@ -51,26 +50,25 @@
                   </clipper-basic>
 
                   <div class="ui-photo-clipper__actions">
-                    <button
-                      class="app__button-flat"
-                      type="button"
-                      v-if="!$attrs.disabled"
+                    <ui-button
+                      look="secondary"
+                      :title="'clipper-field.cancel-lbl'"
+                      fill="none"
+                      :disabled="disabled"
+                      @click="reset"
+                      fullWidth
+                    >
+                      <slot name="cancelSavingDragedPhoto" />
+                    </ui-button>
+                    <ui-button
+                      look="primary"
                       :title="'clipper-field.save-lbl'"
                       :disabled="disabled"
                       @click="cropImg"
+                      fullWidth
                     >
                       <slot name="saveDragedPhoto" />
-                    </button>
-                    <button
-                      class="app__button-flat ui-photo-clipper__reset-btn"
-                      type="button"
-                      v-if="!$attrs.disabled"
-                      :title="'clipper-field.cancel-lbl'"
-                      :disabled="disabled"
-                      @click="reset"
-                    >
-                      <slot name="cancelSavingDragedPhoto" />
-                    </button>
+                    </ui-button>
                   </div>
                 </div>
               </div>
@@ -89,6 +87,8 @@ import Vue from "vue";
 import VueRx from "vue-rx";
 import { Document } from "@tokend/js-sdk";
 
+import { UiButton } from "../../index";
+
 Vue.use(VueRx);
 
 const MAX_FILE_MEGABYTES = 32;
@@ -97,6 +97,7 @@ const IMAGE_FILE_EXTENSIONS = ["jpg", "png", "jpeg"];
 export default {
   components: {
     "ui-photo-field": PhotoField,
+    UiButton,
     clipperBasic,
   },
   props: {
@@ -133,7 +134,6 @@ export default {
       default: false,
     },
   },
-
   data() {
     return {
       IMAGE_FILE_EXTENSIONS,
@@ -276,33 +276,6 @@ $max-width: 40rem;
     margin-top: 2rem;
     width: 100%;
     max-width: $max-width;
-
-    .app__button-flat {
-      color: var(--ui-col-primary);
-      transition: 0.3s ease-out;
-      display: var(--ui-display);
-      justify-content: var(--ui-justify-content);
-      align-items: var(--ui-align-items);
-      border: none;
-      padding: 0.8rem 1.6rem;
-      font-size: 1.4rem;
-      font-weight: var(--ui-font-weight);
-      text-align: var(--ui-text-alight);
-      min-height: 3.6rem;
-      background-color: transparent;
-
-      &[disabled] {
-        color: var(--ui-col-secondary);
-      }
-
-      &:not([disabled]):hover {
-        background-color: var(--ui-app-button-flat-hover-background-color);
-      }
-
-      &:focus {
-        outline: none;
-      }
-    }
   }
 
   &__no-image {
