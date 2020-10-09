@@ -9,7 +9,7 @@
           :options="simple"
           null-option="Any Item"
         >
-          <span class="span-title">Simple Dropdown</span>
+          Simple Dropdown
         </ui-select>
         <pre class="per-items">Items:<br>{{simple}}</pre>
       </p>
@@ -18,7 +18,10 @@
           v-model="simpleValue"
           is-error has-filter 
           :options="simple">
-          Is Error
+          <template slot="error">
+            Is Error
+          </template>
+          Simple Dropdown Error
         </ui-select>
         <ui-select
           v-model="simpleValue"
@@ -45,7 +48,7 @@
 
       <p>
         <ui-select v-model="complexValue" has-filter :options="complex">
-          <span class="span-title">Complex List</span>
+          Complex List
         </ui-select>
       </p>
 
@@ -62,7 +65,7 @@
           search-placeholder="Quick search"
           null-option="Any car"
         >
-          <span class="span-title">Nested List</span>
+          Nested List
         </ui-select>
       </p>
       <p>
@@ -116,23 +119,8 @@ export default {
       width: calc(100% / 3);
       margin: 0 15px;
     }
-  .span-title {
-    font-size: 1.2rem;
-    background-color: white;
-    padding: 0 0.5rem;
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    line-height: 1;
-    margin: -0.5rem 1rem;
-    color: var(--ui-col-primary);
-  }
   .per-items {
     font-size: 13px;
-  }
-  p > div {
-    margin: 30px 0;
   }
 </style>
 ```

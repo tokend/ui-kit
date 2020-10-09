@@ -49,6 +49,7 @@
 <script>
 
 export default {
+  name: 'UiSelectOptions',
   props: {
     items: { type: Array, required: true },
     currentValue: { type: [Number, String, Object], default: null },
@@ -153,7 +154,7 @@ export default {
 
   &__sub {
     /deep/ .ui-items__list-item {
-      margin-left: 2.25em;
+      margin-left: 2em;
     }
   }
 }

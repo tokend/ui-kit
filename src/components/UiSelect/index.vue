@@ -103,12 +103,17 @@
       <slot />
     </span>
     <span
-      class="ui-select__label ui-select__label-error"
+      class="ui-select__label-error"
       :class="{ 'ui-select__label_is-error': isError }"
       v-if="hasSlot('error') && isError"
     >
       <!-- @slot Show this slot if ``:is-error`` true -->
-      <slot name="error" />
+      <slot
+        name="error"
+        class="slotError" />
+      <label class="ui-select__label">
+        <slot />
+      </label>
     </span>
   </div>
 </template>
@@ -526,13 +531,20 @@ export default {
 
   &__label {
     display: block;
-    width: 100%;
-    line-height: 0.75rem;
-    padding-top: 0.4em;
+    position: absolute;
+    top: 0;
+    left: 0;
+    line-height: 1;
+    margin: -0.5rem 0.7rem;
+    color: var(--ui-col-primary);
     font-size: 1.2rem;
+    background-color: white;
+    padding: 0 0.5rem;
 
     &_is-error {
       color: var(--ui-col-error);
+      font-size: 1.2rem;
+      padding-top: 0.75rem;
     }
   }
 
@@ -540,8 +552,6 @@ export default {
     width: 100%;
 
     /deep/ .ui-button__button {
-      @include ui-can-error();
-
       text-align: left;
       color: var(--ui-col-secondary);
 
@@ -549,9 +559,10 @@ export default {
         width: 100%;
         border-radius: 0;
         border-width: 0 0 0.1rem 0;
-        border: 1px solid var(--ui-col-secondary);
-        border-radius: var(--ui-border-radius);
+        border: 1px;
         border-style: solid;
+        border-color: var(--ui-text-border-color-focused);
+        border-radius: var(--ui-border-radius);
         padding: 0 1rem;
         height: 100%;
         overflow: hidden;
@@ -565,8 +576,15 @@ export default {
         }
       }
 
+      &[is-error="true"] {
+        color: var(--ui-col-secondary);
+        border-color: var(--ui-text-border-color-focused);
+      }
+
       &:focus {
         color: var(--ui-col-primary);
+        border-color: var(--ui-text-border-color-focused);
+        box-shadow: var(--ui-text-box-shadow-focused);
       }
     }
   }
@@ -587,7 +605,7 @@ export default {
     &_placeholder-required::after {
       content: "*";
       display: inline;
-      color: black;
+      color: var(--ui-col-error);
       margin-left: -1ch * 0.3;
       font-weight: 400;
     }
@@ -629,13 +647,14 @@ export default {
     max-width: 100%;
     max-height: 45vh;
     background-color: transparent;
-    box-shadow: black; //
     margin-top: 3rem;
     border: 1px solid var(--ui-col-secondary);
     border-top: none;
     border-radius: var(--ui-border-radius);
     border-top-left-radius: 0;
     border-top-right-radius: 0;
+    border-color: var(--ui-text-border-color-focused);
+    box-shadow: var(--ui-text-box-shadow-focused);
 
     /*
       todo: this is not consistent behaviour, need to get rid of it
