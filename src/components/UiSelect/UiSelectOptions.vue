@@ -83,11 +83,11 @@ export default {
 
   &__list-item {
     color: grey; //
-    margin: 1px 1em 0 1em;
-    padding: 0.5em 0.75em;
+    margin: 0 1em 0 1em;
+    padding: 0.3em 0.75em;
     display: flex;
     align-items: center;
-    line-height: 10 * 0.5; //
+    line-height: 1.5;
     white-space: nowrap;
     cursor: pointer;
     position: relative;
@@ -110,7 +110,7 @@ export default {
 
     &_active {
       outline: none;
-      color: black;
+      color: var(--ui-col-primary-contrast);
       background-color: var(--ui-col-primary); //
       opacity: 0.8;
       font-weight: bold;

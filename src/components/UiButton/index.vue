@@ -73,11 +73,10 @@ export default {
   --ui-button-text-align: center;
   --ui-button-padding: 0;
   --ui-button-font-size: var(--ui-font-size);
-  --ui-button-max-width: 20rem;
+  --ui-button-width: 20rem;
   --ui-button-font-weight: 700;
   --ui-button-border-radius: var(--ui-border-radius);
   --ui-button-box-shadow: var(--ui-box-shadow);
-  --ui-button-line-height: var(--ui-button-font-size);
 
   position: unset;
   width: auto;
@@ -106,9 +105,8 @@ export default {
     border-radius: var(--ui-button-border-radius);
     box-shadow: var(--ui-button-box-shadow);
     color: var(--ui-button-color);
-    width: 100%;
+    width: var(--ui-button-width);
     border: var(--ui-button-border);
-    line-height: var(--ui-button-line-height);
     text-align: var(--ui-button-text-align);
 
     &:active, &:focus {

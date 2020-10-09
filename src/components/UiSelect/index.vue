@@ -24,11 +24,6 @@
           class="ui-select__dock ui-select__dock_left">
           <slot name="dock-left" />
         </span>
-        <img
-          v-if="useIcon && currentItem"
-          class="ui-select__button-icon"
-          :src="currentItem.icon"
-        >
 
         <span
           class="ui-select__button-lbl"
@@ -39,13 +34,6 @@
         >
           {{ currentLabel }}
         </span>
-
-        <ui-icon
-          icon="dropdown"
-          v-if="!isDisabled"
-          class="ui-select__dock ui-select__dock_caret"
-          :class="{ 'ui-select__dock_caret_open': isOpen }"
-        />
       </ui-button>
 
       <div
@@ -69,18 +57,7 @@
           :is-error="isError"
           :disabled="isDisabled"
           :placeholder="searchPlaceholder"
-        >
-          <div slot="dock-left">
-            <ui-icon icon="search" />
-          </div>
-          <div slot="dock-right">
-            <a
-              @click="filter = ''"
-              v-if="filter">
-              <ui-icon icon="close" />
-            </a>
-          </div>
-        </ui-text>
+        />
 
         <div
           class="ui-select__options"
@@ -497,12 +474,6 @@ export default {
       if (this.isDisabled) return
       if (this.hasFilter) this.filter = ''
 
-      /**
-       * Emits when model changes with .value or raw string.
-       * @event input
-       * @type String | Number
-       */
-
       this.$emit('input', item ? item.value || item : this.nullOptionValue)
 
       this.close()
@@ -525,6 +496,7 @@ export default {
     @include ui-wrap(flex);
 
     flex-wrap: wrap;
+    width: 200px;
   }
 
   &__dock {
@@ -534,11 +506,11 @@ export default {
 
     &_caret {
       position: absolute;
-      top: 1px;
+      top: 0.1rem;
       right: 0;
-      bottom: 1px;
+      bottom: 0.1rem;
       text-align: right;
-      width: 200px; //
+      width: 20rem; //
       line-height: inherit;
       display: flex;
       align-items: center;
@@ -554,12 +526,12 @@ export default {
     display: block;
     width: 100%;
     clear: both;
-    line-height: 5; //
+    line-height: 2;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
 
     &_is-error {
-      color: red; //
+      color: var(--ui-col-error);
     }
   }
 
@@ -570,14 +542,16 @@ export default {
       @include ui-can-error();
 
       text-align: left;
-      padding-right: 10 * 0.8; //
+      color: var(--ui-col-secondary);
+      font-weight: 200;
+      padding: 0 1.2rem;
 
       &[fill="none"] {
         border-radius: 0;
-        border-width: 0 0 1px 0;
-        border-color: grey; //
+        border-width: 0 0 0.1rem 0;
+        border: 1px solid var(--ui-col-secondary);
+        border-radius: var(--ui-border-radius);
         border-style: solid;
-        padding: 0 10px 0 0; //
         height: 100%;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -586,8 +560,12 @@ export default {
 
       &[fill="frame"] {
         .ui-select__button-lbl_placeholder {
-          color: transparentize(white, 0.75); //
+          color: transparentize(black, 0.75); //
         }
+      }
+
+      &:focus {
+        color: var(--ui-col-primary);
       }
     }
   }
@@ -606,8 +584,9 @@ export default {
     &_placeholder-required::after {
       content: "*";
       display: inline;
-      color: orange;
+      color: black;
       margin-left: -1ch * 0.3;
+      font-weight: 400;
     }
   }
 
@@ -638,20 +617,21 @@ export default {
 
     flex-wrap: wrap;
     position: absolute;
-    top: 10; //
-    min-width: 100%;
-    max-height: 45vh;
+    transition: none;
+    display: none;
     overflow-x: hidden;
     overflow-y: auto;
     z-index: 10; //
-    margin-top: 3px;
-    transition: none;
-    display: none;
-    box-shadow: black; //
-    border-radius: 10px; //
-    padding: 1em 0;
+    min-width: 100%;
     max-width: 100%;
-    background: white; //
+    max-height: 45vh;
+    background-color: transparent;
+    box-shadow: black; //
+    border-radius: 1rem; //
+    top: 10; //
+    margin-top: 3rem;
+    padding: 1em 0;
+    padding-top: 0;
 
     /*
       todo: this is not consistent behaviour, need to get rid of it
@@ -694,9 +674,13 @@ export default {
   }
 
   &__options {
+    border: 1px solid var(--ui-col-secondary);
+    border-top: none;
+    border-radius: var(--ui-border-radius);
+    padding: 1rem 0;
     &_sticky-filter {
       overflow: auto;
-      max-height: 36vh;
+      max-height: 26vh;
       padding-bottom: 1em;
 
       @include scrollbar-awesome();
@@ -706,18 +690,14 @@ export default {
   &__root-item {
     color: grey; //
     margin: 0 1em;
-    padding: 0.4em 0.75em;
+    padding: 0.3em 0.75em;
     display: block;
-    line-height: 10 * 0.5; //
+    line-height: 1.5;
     white-space: nowrap;
     cursor: pointer;
     position: relative;
     border-radius: 3px;
-
-    /deep/ .ui-icon {
-      color: black; //
-      vertical-align: middle;
-    }
+    margin-top: 0.7rem;
 
     &:focus,
     &:active {
@@ -729,10 +709,6 @@ export default {
       color: black; //
       background-color: var(--ui-col-secondary);
       opacity: 0.8;
-
-      /deep/ .ui-icon {
-        color: black; //
-      }
     }
 
     &:last-child {
@@ -745,7 +721,7 @@ export default {
 
     &_active {
       outline: none;
-      color: black; //
+      color: var(--ui-col-secondary-contrast);
       background-color: var(--ui-col-primary);
       opacity: 0.8;
 
@@ -756,7 +732,7 @@ export default {
     }
 
     &-empty {
-      color: red;
+      color: var(--ui-col-error);
     }
   }
 }
