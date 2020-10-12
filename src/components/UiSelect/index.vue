@@ -27,10 +27,7 @@
 
         <span
           class="ui-select__button-lbl"
-          :class="{
-            'ui-select__button-lbl_placeholder': !value,
-            'ui-select__button-lbl_placeholder-required': !value && isRequired
-          }"
+          :class="{'ui-select__button-lbl_placeholder': !value}"
         >
           {{ currentLabel }}
         </span>
@@ -103,6 +100,22 @@
       <slot />
     </span>
     <span
+      class="ui-select__label"
+      :class="{ 'ui-select__label_is-disabled': isDisabled }"
+      v-if="isDisabled"
+    >
+      <!-- @slot Use this slot to place the text field label content -->
+      <slot />
+    </span>
+    <span
+      class="ui-select__label"
+      :class="{ 'ui-select__label__required': isRequired }"
+      v-if="hasSlot('required') && isRequired">
+      <slot
+        name="required"
+        class="slotRequired" />
+    </span>
+    <span
       class="ui-select__label-error"
       :class="{ 'ui-select__label_is-error': isError }"
       v-if="hasSlot('error') && isError"
@@ -111,7 +124,8 @@
       <slot
         name="error"
         class="slotError" />
-      <label class="ui-select__label">
+      <label
+        class="ui-select__label">
         <slot />
       </label>
     </span>
@@ -546,6 +560,18 @@ export default {
       font-size: 1.2rem;
       padding-top: 0.75rem;
     }
+
+    &_is-disabled {
+      color: var(--ui-col-secondary);
+    }
+
+    &__required::after {
+      content: "*";
+      display: inline;
+      color: var(--ui-col-error);
+      margin-left: -1ch * 0.3;
+      font-weight: 400;
+    }
   }
 
   &__button {
@@ -561,7 +587,7 @@ export default {
         border-width: 0 0 0.1rem 0;
         border: 1px;
         border-style: solid;
-        border-color: var(--ui-text-border-color-focused);
+        border-color: var(--ui-col-secondary);
         border-radius: var(--ui-border-radius);
         padding: 0 1rem;
         height: 100%;
@@ -572,7 +598,7 @@ export default {
 
       &[fill="frame"] {
         .ui-select__button-lbl_placeholder {
-          color: transparentize(black, 0.75); //
+          color: transparentize(black, 0.75);
         }
       }
 
@@ -583,7 +609,6 @@ export default {
 
       &:focus {
         color: var(--ui-col-primary);
-        border-color: var(--ui-text-border-color-focused);
         box-shadow: var(--ui-text-box-shadow-focused);
       }
     }
@@ -601,14 +626,6 @@ export default {
 
   &__button-lbl {
     font-weight: 200;
-
-    &_placeholder-required::after {
-      content: "*";
-      display: inline;
-      color: var(--ui-col-error);
-      margin-left: -1ch * 0.3;
-      font-weight: 400;
-    }
   }
 
   &__input {
@@ -622,7 +639,7 @@ export default {
     &_sticky {
       position: sticky;
       top: 1em;
-      padding-bottom: 1em;
+      padding: 1em 0;
     }
   }
 
@@ -653,7 +670,6 @@ export default {
     border-radius: var(--ui-border-radius);
     border-top-left-radius: 0;
     border-top-right-radius: 0;
-    border-color: var(--ui-text-border-color-focused);
     box-shadow: var(--ui-text-box-shadow-focused);
 
     /*

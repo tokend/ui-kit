@@ -82,6 +82,7 @@ export default {
   width: auto;
 
   &[is-full-width] {
+    --ui-button-width: 100%;
     width: 100%;
   }
 
