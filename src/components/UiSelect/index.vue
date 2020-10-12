@@ -99,7 +99,7 @@
       <!-- @slot Use this slot to place the text field label content -->
       <slot />
     </span>
-     <span
+    <span
       class="ui-select__label"
       :class="{ 'ui-select__label_is-disabled': isDisabled }"
       v-if="isDisabled"
@@ -107,11 +107,13 @@
       <!-- @slot Use this slot to place the text field label content -->
       <slot />
     </span>
-    <span class="ui-select__label"
+    <span
+      class="ui-select__label"
       :class="{ 'ui-select__label__required': isRequired }"
       v-if="hasSlot('required') && isRequired">
-      <slot name="required"
-        class="slotRequired"/>
+      <slot
+        name="required"
+        class="slotRequired" />
     </span>
     <span
       class="ui-select__label-error"
@@ -122,7 +124,8 @@
       <slot
         name="error"
         class="slotError" />
-      <label class="ui-select__label">
+      <label
+        class="ui-select__label">
         <slot />
       </label>
     </span>
