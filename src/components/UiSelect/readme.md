@@ -29,7 +29,9 @@
           has-filter
           :options="simple"
         >
-          Is Required
+          <template slot="required">
+            Is Required
+          </template>
         </ui-select>
         <ui-select
           v-model="simpleValue"
