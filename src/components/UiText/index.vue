@@ -100,7 +100,6 @@ export default {
       } else if (this.min !== '' && Number(value) < Number(this.min)) {
         result = this.min
       }
-
       return result
     },
 
@@ -108,7 +107,6 @@ export default {
       if (!this.step) {
         return value
       }
-
       let precision
       try {
         precision = String(this.step)
@@ -128,7 +126,6 @@ export default {
       } else {
         result = String(value).split(/\.|,/)[0]
       }
-
       return result
     },
   },
