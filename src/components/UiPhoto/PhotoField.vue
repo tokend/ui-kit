@@ -14,10 +14,14 @@
             v-if="documentUrl && isImageSelected"
             class="ui-photo-field__img-preview-wrp"
           >
-            <img class="ui-photo-field__img-preview" :src="documentUrl" />
+            <img
+              class="ui-photo-field__img-preview"
+              :src="documentUrl">
           </div>
 
-          <div v-else class="ui-photo-field__icon-preview-wrp">
+          <div
+            v-else
+            class="ui-photo-field__icon-preview-wrp">
             <i class="mdi mdi-file ui-photo-field__icon-preview" />
           </div>
 
@@ -28,7 +32,9 @@
 
         <div class="ui-photo-field__inner">
           <template v-if="!$attrs.disabled">
-            <i v-if="!document" class="mdi ui-photo-field__icon mdi-camera" />
+            <i
+              v-if="!document"
+              class="mdi ui-photo-field__icon mdi-camera" />
             <div
               v-if="!document"
               class="ui-photo-field__label"
@@ -37,7 +43,9 @@
                 'ui-photo-field__label--error': errorMessage,
               }"
             >
-              <slot name="mainLabel"> Your photo </slot>
+              <slot name="mainLabel">
+                Your photo
+              </slot>
             </div>
           </template>
         </div>
@@ -53,10 +61,12 @@
           @dragenter="isFileDragged = true"
           @dragleave="isFileDragged = false"
           @drop="isFileDragged = false"
-        />
+        >
       </div>
 
-      <div class="ui-photo-field__err-mes" v-if="hasSlot('error')">
+      <div
+        class="ui-photo-field__err-mes"
+        v-if="hasSlot('error')">
         <slot name="error" />
       </div>
     </div>
@@ -64,11 +74,11 @@
 </template>
 
 <script>
-import { FileUtil, FileNotPresentInEventError } from "../../utils/file.util";
-import { Document } from "@tokend/js-sdk";
+import { FileUtil, FileNotPresentInEventError } from '../../utils/file.util'
+import { Document } from '@tokend/js-sdk'
 
-const MAX_FILE_MEGABYTES = 32;
-const FILE_EXTENSIONS = ["jpg", "png", "jpeg"];
+const MAX_FILE_MEGABYTES = 32
+const FILE_EXTENSIONS = ['jpg', 'png', 'jpeg']
 
 export default {
   props: {
@@ -78,7 +88,7 @@ export default {
     },
     documentType: {
       type: String,
-      default: "default",
+      default: 'default',
     },
     fileExtensions: {
       type: Array,
@@ -105,124 +115,124 @@ export default {
   data: (_) => ({
     document: null,
     isFileDragged: false,
-    documentUrl: "",
+    documentUrl: '',
   }),
 
   computed: {
-    maxSizeBytes() {
-      return this.maxSize * 1024 * 1024;
+    maxSizeBytes () {
+      return this.maxSize * 1024 * 1024
     },
 
-    isImageSelected() {
-      const mimeType = this.document.mimeType;
-      return mimeType && mimeType.includes("image");
+    isImageSelected () {
+      const mimeType = this.document.mimeType
+      return mimeType && mimeType.includes('image')
     },
 
-    acceptedExtensions() {
+    acceptedExtensions () {
       return this.fileExtensions
         .map((item) => `.${item.toUpperCase()}`)
-        .join(", ");
+        .join(', ')
     },
   },
   watch: {
     value: {
-      handler(value) {
-        this.document = value;
-        if (value) this.loadDocumentUrl(value);
+      handler (value) {
+        this.document = value
+        if (value) this.loadDocumentUrl(value)
       },
       immediate: true,
     },
   },
   methods: {
-    hasSlot(slot) {
-      return !!this.$slots[slot];
+    hasSlot (slot) {
+      return !!this.$slots[slot]
     },
-    async loadDocumentUrl(document) {
+    async loadDocumentUrl (document) {
       if (document.key) {
-        this.documentUrl = await document.getPrivateUrl();
+        this.documentUrl = await document.getPrivateUrl()
       } else {
-        this.documentUrl = await FileUtil.getDataUrl(document.file);
+        this.documentUrl = await FileUtil.getDataUrl(document.file)
       }
     },
-    async onChange(event) {
+    async onChange (event) {
       try {
-        const file = FileUtil.getFileFromEvent(event);
+        const file = FileUtil.getFileFromEvent(event)
         if (await this.validateFile(file)) {
-          this.documentUrl = await FileUtil.getDataUrl(file);
+          this.documentUrl = await FileUtil.getDataUrl(file)
           this.document = new Document({
             mimeType: file.type,
             type: this.documentType,
             name: file.name,
             file: file,
-          });
-          this.$emit("input", this.document);
+          })
+          this.$emit('input', this.document)
         } else {
-          this.$emit("error");
+          this.$emit('error')
         }
       } catch (e) {
         if (e instanceof FileNotPresentInEventError) {
-          this.reset();
+          this.reset()
         } else {
-          this.$emit(e);
+          this.$emit(e)
         }
-        return false;
+        return false
       }
     },
 
-    reset() {
-      this.$el.querySelector("input").value = "";
-      this.document = null;
-      this.documentUrl = "";
-      this.$emit("input", this.document);
+    reset () {
+      this.$el.querySelector('input').value = ''
+      this.document = null
+      this.documentUrl = ''
+      this.$emit('input', this.document)
     },
 
-    async validateFile(file) {
+    async validateFile (file) {
       if (!this.isValidFileType(file)) {
-        this.$emit("err-invalid-file-type");
-        return false;
+        this.$emit('err-invalid-file-type')
+        return false
       }
 
       if (!this.isValidFileSize(file)) {
-        this.$emit("err-invalid-file-size");
-        return false;
+        this.$emit('err-invalid-file-size')
+        return false
       }
 
       if (!(await this.isValidFileDimensions(file))) {
-        this.$emit("err-invalid-file-dimensions");
-        return false;
+        this.$emit('err-invalid-file-dimensions')
+        return false
       }
-      return true;
+      return true
     },
 
-    async isValidFileDimensions(file) {
-      if (!file.type.includes("image")) {
-        return true;
+    async isValidFileDimensions (file) {
+      if (!file.type.includes('image')) {
+        return true
       }
       try {
-        const img = await FileUtil.readImage(file);
-        return img.width >= this.minWidth && img.height >= this.minHeight;
+        const img = await FileUtil.readImage(file)
+        return img.width >= this.minWidth && img.height >= this.minHeight
       } catch (e) {
-        return false;
+        return false
       }
     },
 
-    isValidFileType(file) {
+    isValidFileType (file) {
       return Boolean(
         this.fileExtensions.find(
           (item) => item.toUpperCase() === this.getFileExtension(file)
         )
-      );
+      )
     },
 
-    getFileExtension(file) {
-      return file.name.split(".").pop().toUpperCase();
+    getFileExtension (file) {
+      return file.name.split('.').pop().toUpperCase()
     },
 
-    isValidFileSize(file) {
-      return file.size <= this.maxSizeBytes;
+    isValidFileSize (file) {
+      return file.size <= this.maxSizeBytes
     },
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>
