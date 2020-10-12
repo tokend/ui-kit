@@ -561,7 +561,7 @@ export default {
         border-width: 0 0 0.1rem 0;
         border: 1px;
         border-style: solid;
-        border-color: var(--ui-text-border-color-focused);
+        border-color: var(--ui-col-secondary);
         border-radius: var(--ui-border-radius);
         padding: 0 1rem;
         height: 100%;
@@ -583,7 +583,6 @@ export default {
 
       &:focus {
         color: var(--ui-col-primary);
-        border-color: var(--ui-text-border-color-focused);
         box-shadow: var(--ui-text-box-shadow-focused);
       }
     }
@@ -653,7 +652,6 @@ export default {
     border-radius: var(--ui-border-radius);
     border-top-left-radius: 0;
     border-top-right-radius: 0;
-    border-color: var(--ui-text-border-color-focused);
     box-shadow: var(--ui-text-box-shadow-focused);
 
     /*
