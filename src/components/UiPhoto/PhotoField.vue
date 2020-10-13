@@ -4,8 +4,7 @@
       <div
         class="ui-photo-field__content"
         :class="{
-          'ui-photo-field__content--disabled': $attrs.disabled,
-          'ui-photo-field__content--error-disabled': errorDisabled,
+          'ui-photo-field__content--disabled': $attrs.disabled && !errorDisabled,
           'ui-photo-field__content--error': errorMessage,
           'ui-photo-field__content--highlighted': isFileDragged,
         }"
@@ -43,7 +42,6 @@
             v-if="!document"
             class="ui-photo-field__label"
             :class="{
-              'ui-photo-field__label--disabled': $attrs.disabled,
               'ui-photo-field__label--error': errorMessage,
             }"
           >
@@ -56,7 +54,7 @@
           type="file"
           class="ui-photo-field__input"
           :accept="acceptedExtensions"
-          title=""
+          :disabled="errorDisabled || $attrs.disabled"
           @click="reset"
           @change="onChange"
           @dragenter="isFileDragged = true"
@@ -320,14 +318,13 @@ $z-reset-btn: 1;
     background-color: var(--ui-content-background-color);
     transition: 0.2s;
     overflow: hidden;
+    &--error {
+      border-color: var(--ui-col-error);
+    }
   }
 
   &__content:hover &__change-preview-wrp {
     opacity: 1;
-  }
-
-  &__content--error {
-    border-color: var(--ui-col-error);
   }
 
   &__content--highlighted {
@@ -335,12 +332,7 @@ $z-reset-btn: 1;
     border-color: var(--ui-content-highlighted-border-color);
   }
 
-  &__content--disabled,
-  &__label--disabled {
-    filter: grayscale(100%);
-  }
-
-  &__content--error-disabled{
+  &__content--disabled {
     filter: grayscale(100%);
   }
 
