@@ -11,12 +11,19 @@
         :file-extensions="IMAGE_FILE_EXTENSIONS"
         :max-size="maxSize"
         :error-message="errorMessage"
+        :error-disabled="disabled"
         @input="tryCropImg"
         @err-invalid-file-size="$emit('err-invalid-file-size')"
         @err-invalid-file-type="$emit('err-invalid-file-type')"
         @err-invalid-file-dimensions="$emit('err-invalid-file-dimensions')"
-      />
-      <transition name="ui-photo-clipper__modal" v-if="isEditorOpened">
+      >
+        <slot
+          name="error"
+          slot="error" />
+      </ui-photo-field>
+      <transition
+        name="ui-photo-clipper__modal"
+        v-if="isEditorOpened">
         <div class="ui-photo-clipper__modal-mask">
           <div class="ui-photo-clipper__modal-wrapper">
             <div class="ui-photo-clipper__modal-container">
@@ -39,7 +46,9 @@
                     bg-color="transparent"
                     :ratio="ratio"
                   >
-                    <div class="ui-photo-clipper__no-image" slot="placeholder">
+                    <div
+                      class="ui-photo-clipper__no-image"
+                      slot="placeholder">
                       ƒ
                       <!-- eslint-disable max-len -->
                       <i
@@ -54,18 +63,16 @@
                       look="secondary"
                       :title="'clipper-field.cancel-lbl'"
                       fill="none"
-                      :disabled="disabled"
                       @click="reset"
-                      fullWidth
+                      full-width
                     >
                       <slot name="cancelSavingDragedPhoto" />
                     </ui-button>
                     <ui-button
                       look="primary"
                       :title="'clipper-field.save-lbl'"
-                      :disabled="disabled"
                       @click="cropImg"
-                      fullWidth
+                      full-width
                     >
                       <slot name="saveDragedPhoto" />
                     </ui-button>
@@ -81,22 +88,22 @@
 </template>
 
 <script>
-import PhotoField from "./PhotoField";
-import { clipperBasic } from "vuejs-clipper";
-import Vue from "vue";
-import VueRx from "vue-rx";
-import { Document } from "@tokend/js-sdk";
+import PhotoField from './PhotoField'
+import { clipperBasic } from 'vuejs-clipper'
+import Vue from 'vue'
+import VueRx from 'vue-rx'
+import { Document } from '@tokend/js-sdk'
 
-import { UiButton } from "../../index";
+import { UiButton } from '../../index'
 
-Vue.use(VueRx);
+Vue.use(VueRx)
 
-const MAX_FILE_MEGABYTES = 32;
-const IMAGE_FILE_EXTENSIONS = ["jpg", "png", "jpeg"];
+const MAX_FILE_MEGABYTES = 32
+const IMAGE_FILE_EXTENSIONS = ['jpg', 'png', 'jpeg']
 
 export default {
   components: {
-    "ui-photo-field": PhotoField,
+    'ui-photo-field': PhotoField,
     UiButton,
     clipperBasic,
   },
@@ -107,7 +114,7 @@ export default {
     },
     documentType: {
       type: String,
-      default: "default",
+      default: 'default',
     },
     maxSize: {
       type: Number,
@@ -133,69 +140,73 @@ export default {
       type: Boolean,
       default: false,
     },
+    errorDisabled: {
+      type: Boolean,
+      default: false,
+    },
   },
-  data() {
+  data () {
     return {
       IMAGE_FILE_EXTENSIONS,
       originImg: null,
-      imgURL: "",
-      resultURL: "",
+      imgURL: '',
+      resultURL: '',
       isEditorOpened: false,
-    };
+    }
   },
-  created() {
-    this.originImg = this.value;
+  created () {
+    this.originImg = this.value
   },
   methods: {
-    tryCropImg(value) {
+    tryCropImg (value) {
       if (value) {
-        this.originImg = value;
-        if (this.imgURL) URL.revokeObjectURL(this.imgURL);
-        this.imgURL = window.URL.createObjectURL(value.file);
-        this.isEditorOpened = true;
+        this.originImg = value
+        if (this.imgURL) URL.revokeObjectURL(this.imgURL)
+        this.imgURL = window.URL.createObjectURL(value.file)
+        this.isEditorOpened = true
       } else {
-        this.reset();
+        this.reset()
       }
     },
-    async cropImg() {
-      const canvas = this.$refs.clipper.clip(); // call component's clip method
-      this.resultURL = canvas.toDataURL(this.originImg.mimeType, 1);
+    async cropImg () {
+      const canvas = this.$refs.clipper.clip() // call component's clip method
+      this.resultURL = canvas.toDataURL(this.originImg.mimeType, 1)
 
-      const blob = this.dataURItoBlob(this.resultURL);
+      const blob = this.dataURItoBlob(this.resultURL)
       this.originImg = new Document({
         mimeType: blob.type,
-        name: "new__" + this.originImg.name,
+        name: 'new__' + this.originImg.name,
         type: this.documentType,
         file: blob,
-      });
-      this.isEditorOpened = false;
-      this.$emit("input", this.originImg);
+      })
+      this.isEditorOpened = false
+      this.$emit('input', this.originImg)
     },
-    reset() {
-      if (this.imgURL) URL.revokeObjectURL(this.imgURL);
-      this.imgURL = "";
-      this.originImg = null;
-      this.isEditorOpened = false;
-      this.$emit("input", this.originImg);
+    reset () {
+      if (this.imgURL) URL.revokeObjectURL(this.imgURL)
+      this.imgURL = ''
+      this.originImg = null
+      this.isEditorOpened = false
+      this.$emit('input', this.originImg)
     },
-    dataURItoBlob(dataURI) {
+    dataURItoBlob (dataURI) {
       // convert base64 to raw binary data held in a string
       // doesn't handle URLEncoded DataURIs - see SO answer
       // #6850276 for code that does this
-      let byteString = atob(dataURI.split(",")[1]);
-      let mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
-      let ab = new ArrayBuffer(byteString.length);
-      let ia = new Uint8Array(ab);
+      let byteString = atob(dataURI.split(',')[1])
+      let mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+      let ab = new ArrayBuffer(byteString.length)
+      let ia = new Uint8Array(ab)
 
       for (let i = 0; i < byteString.length; i++) {
-        ia[i] = byteString.charCodeAt(i);
+        ia[i] = byteString.charCodeAt(i)
       }
       return new Blob([ab], {
         type: mimeString,
-      });
+      })
     },
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -207,7 +218,9 @@ $max-width: 40rem;
 .fade-leave-active {
   transition: opacity 0.5s;
 }
-.fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+
+.fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */
+{
   opacity: 0;
 }
 
@@ -224,6 +237,7 @@ $max-width: 40rem;
   --ui-app-button-flat-hover-background-color: #d3daf7;
 
   width: 100%;
+  font-family: var(--ui-font-family);
 
   &__editor {
     display: var(--ui-display);
@@ -240,8 +254,8 @@ $max-width: 40rem;
 
   &__label {
     font-size: 1.2rem;
+    text-align: var(--ui-text-alight);
     color: var(--ui-label-color);
-    margin-bottom: 0.6rem;
   }
 
   &__label--error {
@@ -308,7 +322,6 @@ $max-width: 40rem;
     border-radius: 2px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
     transition: all 0.3s ease;
-    font-family: Helvetica, Arial, sans-serif;
   }
 
   &__modal-header h3 {

@@ -5,6 +5,7 @@
         class="ui-photo-field__content"
         :class="{
           'ui-photo-field__content--disabled': $attrs.disabled,
+          'ui-photo-field__content--error-disabled': errorDisabled,
           'ui-photo-field__content--error': errorMessage,
           'ui-photo-field__content--highlighted': isFileDragged,
         }"
@@ -14,10 +15,14 @@
             v-if="documentUrl && isImageSelected"
             class="ui-photo-field__img-preview-wrp"
           >
-            <img class="ui-photo-field__img-preview" :src="documentUrl" />
+            <img
+              class="ui-photo-field__img-preview"
+              :src="documentUrl">
           </div>
 
-          <div v-else class="ui-photo-field__icon-preview-wrp">
+          <div
+            v-else
+            class="ui-photo-field__icon-preview-wrp">
             <i class="mdi mdi-file ui-photo-field__icon-preview" />
           </div>
 
@@ -27,19 +32,23 @@
         </template>
 
         <div class="ui-photo-field__inner">
-          <template v-if="!$attrs.disabled">
-            <i v-if="!document" class="mdi ui-photo-field__icon mdi-camera" />
-            <div
-              v-if="!document"
-              class="ui-photo-field__label"
-              :class="{
-                'ui-photo-field__label--disabled': $attrs.disabled,
-                'ui-photo-field__label--error': errorMessage,
-              }"
-            >
-              <slot name="mainLabel"> Your photo </slot>
-            </div>
-          </template>
+          <i
+            v-if="!document"
+            class="mdi ui-photo-field__icon mdi-camera"
+            :class="{
+              'ui-photo-field__icon--error': errorMessage,
+            }"
+          />
+          <div
+            v-if="!document"
+            class="ui-photo-field__label"
+            :class="{
+              'ui-photo-field__label--disabled': $attrs.disabled,
+              'ui-photo-field__label--error': errorMessage,
+            }"
+          >
+            Your photo
+          </div>
         </div>
 
         <input
@@ -53,10 +62,12 @@
           @dragenter="isFileDragged = true"
           @dragleave="isFileDragged = false"
           @drop="isFileDragged = false"
-        />
+        >
       </div>
 
-      <div class="ui-photo-field__err-mes" v-if="hasSlot('error')">
+      <div
+        class="ui-photo-field__err-msg"
+        v-if="errorMessage">
         <slot name="error" />
       </div>
     </div>
@@ -64,11 +75,11 @@
 </template>
 
 <script>
-import { FileUtil, FileNotPresentInEventError } from "../../utils/file.util";
-import { Document } from "@tokend/js-sdk";
+import { FileUtil, FileNotPresentInEventError } from '../../utils/file.util'
+import { Document } from '@tokend/js-sdk'
 
-const MAX_FILE_MEGABYTES = 32;
-const FILE_EXTENSIONS = ["jpg", "png", "jpeg"];
+const MAX_FILE_MEGABYTES = 32
+const FILE_EXTENSIONS = ['jpg', 'png', 'jpeg']
 
 export default {
   props: {
@@ -78,7 +89,7 @@ export default {
     },
     documentType: {
       type: String,
-      default: "default",
+      default: 'default',
     },
     fileExtensions: {
       type: Array,
@@ -100,129 +111,133 @@ export default {
       type: Number,
       default: 0,
     },
+    errorDisabled: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   data: (_) => ({
     document: null,
     isFileDragged: false,
-    documentUrl: "",
+    documentUrl: '',
   }),
 
   computed: {
-    maxSizeBytes() {
-      return this.maxSize * 1024 * 1024;
+    maxSizeBytes () {
+      return this.maxSize * 1024 * 1024
     },
 
-    isImageSelected() {
-      const mimeType = this.document.mimeType;
-      return mimeType && mimeType.includes("image");
+    isImageSelected () {
+      const mimeType = this.document.mimeType
+      return mimeType && mimeType.includes('image')
     },
 
-    acceptedExtensions() {
+    acceptedExtensions () {
       return this.fileExtensions
         .map((item) => `.${item.toUpperCase()}`)
-        .join(", ");
+        .join(', ')
     },
   },
   watch: {
     value: {
-      handler(value) {
-        this.document = value;
-        if (value) this.loadDocumentUrl(value);
+      handler (value) {
+        this.document = value
+        if (value) this.loadDocumentUrl(value)
       },
       immediate: true,
     },
   },
   methods: {
-    hasSlot(slot) {
-      return !!this.$slots[slot];
+    hasSlot (slot) {
+      return !!this.$slots[slot]
     },
-    async loadDocumentUrl(document) {
+    async loadDocumentUrl (document) {
       if (document.key) {
-        this.documentUrl = await document.getPrivateUrl();
+        this.documentUrl = await document.getPrivateUrl()
       } else {
-        this.documentUrl = await FileUtil.getDataUrl(document.file);
+        this.documentUrl = await FileUtil.getDataUrl(document.file)
       }
     },
-    async onChange(event) {
+    async onChange (event) {
       try {
-        const file = FileUtil.getFileFromEvent(event);
+        const file = FileUtil.getFileFromEvent(event)
         if (await this.validateFile(file)) {
-          this.documentUrl = await FileUtil.getDataUrl(file);
+          this.documentUrl = await FileUtil.getDataUrl(file)
           this.document = new Document({
             mimeType: file.type,
             type: this.documentType,
             name: file.name,
             file: file,
-          });
-          this.$emit("input", this.document);
+          })
+          this.$emit('input', this.document)
         } else {
-          this.$emit("error");
+          this.$emit('error')
         }
       } catch (e) {
         if (e instanceof FileNotPresentInEventError) {
-          this.reset();
+          this.reset()
         } else {
-          this.$emit(e);
+          this.$emit(e)
         }
-        return false;
+        return false
       }
     },
 
-    reset() {
-      this.$el.querySelector("input").value = "";
-      this.document = null;
-      this.documentUrl = "";
-      this.$emit("input", this.document);
+    reset () {
+      this.$el.querySelector('input').value = ''
+      this.document = null
+      this.documentUrl = ''
+      this.$emit('input', this.document)
     },
 
-    async validateFile(file) {
+    async validateFile (file) {
       if (!this.isValidFileType(file)) {
-        this.$emit("err-invalid-file-type");
-        return false;
+        this.$emit('err-invalid-file-type')
+        return false
       }
 
       if (!this.isValidFileSize(file)) {
-        this.$emit("err-invalid-file-size");
-        return false;
+        this.$emit('err-invalid-file-size')
+        return false
       }
 
       if (!(await this.isValidFileDimensions(file))) {
-        this.$emit("err-invalid-file-dimensions");
-        return false;
+        this.$emit('err-invalid-file-dimensions')
+        return false
       }
-      return true;
+      return true
     },
 
-    async isValidFileDimensions(file) {
-      if (!file.type.includes("image")) {
-        return true;
+    async isValidFileDimensions (file) {
+      if (!file.type.includes('image')) {
+        return true
       }
       try {
-        const img = await FileUtil.readImage(file);
-        return img.width >= this.minWidth && img.height >= this.minHeight;
+        const img = await FileUtil.readImage(file)
+        return img.width >= this.minWidth && img.height >= this.minHeight
       } catch (e) {
-        return false;
+        return false
       }
     },
 
-    isValidFileType(file) {
+    isValidFileType (file) {
       return Boolean(
         this.fileExtensions.find(
           (item) => item.toUpperCase() === this.getFileExtension(file)
         )
-      );
+      )
     },
 
-    getFileExtension(file) {
-      return file.name.split(".").pop().toUpperCase();
+    getFileExtension (file) {
+      return file.name.split('.').pop().toUpperCase()
     },
 
-    isValidFileSize(file) {
-      return file.size <= this.maxSizeBytes;
+    isValidFileSize (file) {
+      return file.size <= this.maxSizeBytes
     },
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -258,6 +273,9 @@ $z-reset-btn: 1;
     text-align: var(--ui-text-align);
     font-size: var(--ui-font-size);
     line-height: 1;
+    &--error{
+     color: var(--ui-col-error);
+    }
   }
 
   &__inner {
@@ -280,10 +298,9 @@ $z-reset-btn: 1;
   &__icon {
     color: var(--ui-icon-color);
     font-size: 7rem;
-  }
-
-  &__label--error {
-    color: var(--ui-col-error);
+    &--error{
+      color: var(--ui-col-error);
+    }
   }
 
   &__container {
@@ -323,6 +340,10 @@ $z-reset-btn: 1;
     filter: grayscale(100%);
   }
 
+  &__content--error-disabled{
+    filter: grayscale(100%);
+  }
+
   &__img-preview-wrp {
     display: var(--ui-display);
     flex-direction: column;
@@ -359,13 +380,11 @@ $z-reset-btn: 1;
     opacity: 0;
   }
 
-  //......................
-  &__err-mes {
+  &__err-msg {
+    display: block;
     color: var(--ui-col-error);
-    margin-top: 0.4rem;
     font-size: var(--ui-font-size);
-    line-height: 1.25;
-    background-color: var(--ui-col-error);
+    margin-top: 0.5rem;
   }
 }
 
