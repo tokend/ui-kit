@@ -1,6 +1,11 @@
 <template>
   <div class="ui-photo">
     <div class="ui-photo-clipper">
+      <div
+        class="ui-photo-clipper__label"
+      >
+        <slot name="mainLabel" />
+      </div>
       <ui-photo-field
         name="ui-photo-clipper-img"
         :value="originImg"
@@ -10,7 +15,6 @@
         :disabled="disabled"
         :file-extensions="IMAGE_FILE_EXTENSIONS"
         :max-size="maxSize"
-        :error-disabled="errorDisabled"
         @input="tryCropImg"
         @err-invalid-file-size="$emit('err-invalid-file-size')"
         @err-invalid-file-type="$emit('err-invalid-file-type')"
@@ -26,14 +30,6 @@
         <div class="ui-photo-clipper__modal-mask">
           <div class="ui-photo-clipper__modal-container">
             <div class="ui-photo-clipper__editor">
-              <div
-                class="ui-photo-clipper__label"
-                :class="{
-                  'ui-photo-clipper__label--error': hasSlot('error'),
-                }"
-              >
-                <slot name="mainLabel" />
-              </div>
               <clipper-basic
                 class="ui-photo-clipper__clipper"
                 :src="imgURL"
@@ -129,10 +125,6 @@ export default {
       type: Boolean,
       default: false,
     },
-    errorDisabled: {
-      type: Boolean,
-      default: false,
-    },
   },
   data () {
     return {
@@ -147,9 +139,6 @@ export default {
     this.originImg = this.value
   },
   methods: {
-    hasSlot (slot) {
-      return !!this.$slots[slot]
-    },
     tryCropImg (value) {
       if (value) {
         this.originImg = value
@@ -239,10 +228,6 @@ $max-width: 40rem;
     font-size: 1.2rem;
     text-align: var(--ui-text-alight);
     color: var(--ui-label-color);
-  }
-
-  &__label--error {
-    color: var(--ui-col-error);
   }
 
   &__clipper {

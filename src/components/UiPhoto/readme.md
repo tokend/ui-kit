@@ -17,7 +17,7 @@ Disabled input.
 </ui-photo>
 ```
 
-Input with error message and available input.
+Input with error message.
 
 ```jsx
 <ui-photo>
@@ -28,12 +28,44 @@ Input with error message and available input.
 </ui-photo>
 ```
 
-Disabled error input.
+Input with error handler (size).
 
 ```jsx
-<ui-photo error-disabled>
-    <template slot="error">Some error message</template>
+function errorHandler(){
+    alert(Error('File size is invalid'))
+}
+
+<ui-photo @err-invalid-file-size="errorHandler" :max-size="0">
+    <template slot="mainLabel">Logo (Optional)</template>
+    <template slot="saveDragedPhoto">Save</template>
+    <template slot="cancelSavingDragedPhoto">Cancel</template>
 </ui-photo>
 ```
 
+Input with error handler (type).
 
+```jsx
+function errorHandler(){
+    alert(Error('File type is invalid'))
+}
+
+<ui-photo @err-invalid-file-type="errorHandler">
+    <template slot="mainLabel">Logo (Optional)</template>
+    <template slot="saveDragedPhoto">Save</template>
+    <template slot="cancelSavingDragedPhoto">Cancel</template>
+</ui-photo>
+```
+
+Input with error handler (dimensions).
+
+```jsx
+function errorHandler(){
+    alert(Error('File dimensions is invalid'))
+}
+
+<ui-photo @err-invalid-file-dimensions="errorHandler" :min-width="1000" :min-height="1000">
+    <template slot="mainLabel">Logo (Optional)</template>
+    <template slot="saveDragedPhoto">Save</template>
+    <template slot="cancelSavingDragedPhoto">Cancel</template>
+</ui-photo>
+```

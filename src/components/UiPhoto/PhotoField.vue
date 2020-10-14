@@ -4,8 +4,7 @@
       <div
         class="ui-photo-field__content"
         :class="{
-          'ui-photo-field__content--disabled': $attrs.disabled && !errorDisabled,
-          'ui-photo-field__content--error': hasSlot('error'),
+          'ui-photo-field__content--disabled': $attrs.disabled,
           'ui-photo-field__content--highlighted': isFileDragged,
         }"
       >
@@ -34,16 +33,10 @@
           <i
             v-if="!document"
             class="mdi ui-photo-field__icon mdi-camera"
-            :class="{
-              'ui-photo-field__icon--error': hasSlot('error'),
-            }"
           />
           <div
             v-if="!document"
             class="ui-photo-field__label"
-            :class="{
-              'ui-photo-field__label--error': hasSlot('error'),
-            }"
           >
             Your photo
           </div>
@@ -54,7 +47,6 @@
           type="file"
           class="ui-photo-field__input"
           :accept="acceptedExtensions"
-          :disabled="errorDisabled || $attrs.disabled"
           @click="reset"
           @change="onChange"
           @dragenter="isFileDragged = true"
@@ -104,10 +96,6 @@ export default {
     minHeight: {
       type: Number,
       default: 0,
-    },
-    errorDisabled: {
-      type: Boolean,
-      default: false,
     },
   },
 
@@ -267,9 +255,6 @@ $z-reset-btn: 1;
     text-align: var(--ui-text-align);
     font-size: var(--ui-font-size);
     line-height: 1;
-    &--error{
-     color: var(--ui-col-error);
-    }
   }
 
   &__inner {
@@ -287,14 +272,14 @@ $z-reset-btn: 1;
     opacity: 0;
     width: var(--ui-width);
     height: 100%;
+    &[disabled]{
+      cursor: auto;
+    }
   }
 
   &__icon {
     color: var(--ui-icon-color);
     font-size: 7rem;
-    &--error{
-      color: var(--ui-col-error);
-    }
   }
 
   &__container {
@@ -314,9 +299,6 @@ $z-reset-btn: 1;
     background-color: var(--ui-content-background-color);
     transition: 0.2s;
     overflow: hidden;
-    &--error {
-      border-color: var(--ui-col-error);
-    }
   }
 
   &__content:hover &__change-preview-wrp {
@@ -330,6 +312,7 @@ $z-reset-btn: 1;
 
   &__content--disabled {
     filter: grayscale(100%);
+    opacity: 0.5;
   }
 
   &__img-preview-wrp {
