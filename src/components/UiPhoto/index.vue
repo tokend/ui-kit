@@ -10,7 +10,6 @@
         :disabled="disabled"
         :file-extensions="IMAGE_FILE_EXTENSIONS"
         :max-size="maxSize"
-        :error-message="errorMessage"
         :error-disabled="errorDisabled"
         @input="tryCropImg"
         @err-invalid-file-size="$emit('err-invalid-file-size')"
@@ -30,7 +29,7 @@
               <div
                 class="ui-photo-clipper__label"
                 :class="{
-                  'ui-photo-clipper__label--error': errorMessage,
+                  'ui-photo-clipper__label--error': hasSlot('error'),
                 }"
               >
                 <slot name="mainLabel" />
@@ -114,10 +113,6 @@ export default {
       type: Number,
       default: MAX_FILE_MEGABYTES,
     },
-    errorMessage: {
-      type: String,
-      default: undefined,
-    },
     minWidth: {
       type: Number,
       default: 0,
@@ -152,6 +147,9 @@ export default {
     this.originImg = this.value
   },
   methods: {
+    hasSlot (slot) {
+      return !!this.$slots[slot]
+    },
     tryCropImg (value) {
       if (value) {
         this.originImg = value
@@ -207,16 +205,6 @@ export default {
 @import "../../styles/all";
 
 $max-width: 40rem;
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
-}
-
-.fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */
-{
-  opacity: 0;
-}
 
 .ui-photo-clipper {
   --ui-display: flex;

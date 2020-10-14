@@ -5,7 +5,7 @@
         class="ui-photo-field__content"
         :class="{
           'ui-photo-field__content--disabled': $attrs.disabled && !errorDisabled,
-          'ui-photo-field__content--error': errorMessage,
+          'ui-photo-field__content--error': hasSlot('error'),
           'ui-photo-field__content--highlighted': isFileDragged,
         }"
       >
@@ -35,14 +35,14 @@
             v-if="!document"
             class="mdi ui-photo-field__icon mdi-camera"
             :class="{
-              'ui-photo-field__icon--error': errorMessage,
+              'ui-photo-field__icon--error': hasSlot('error'),
             }"
           />
           <div
             v-if="!document"
             class="ui-photo-field__label"
             :class="{
-              'ui-photo-field__label--error': errorMessage,
+              'ui-photo-field__label--error': hasSlot('error'),
             }"
           >
             Your photo
@@ -65,7 +65,7 @@
 
       <div
         class="ui-photo-field__err-msg"
-        v-if="errorMessage">
+        v-if="hasSlot('error')">
         <slot name="error" />
       </div>
     </div>
@@ -96,10 +96,6 @@ export default {
     maxSize: {
       type: Number,
       default: MAX_FILE_MEGABYTES,
-    },
-    errorMessage: {
-      type: String,
-      default: undefined,
     },
     minWidth: {
       type: Number,

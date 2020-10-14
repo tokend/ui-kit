@@ -1,7 +1,7 @@
 Input for downloading the photo.
 
 ```jsx
-<ui-photo>
+<ui-photo v-bind:min-width="100" v-bind:min-height="100" v-bind:max-size="32">
     <template slot="mainLabel">Logo (Optional)</template>
     <template slot="saveDragedPhoto">Save</template>
     <template slot="cancelSavingDragedPhoto">Cancel</template>
@@ -20,7 +20,7 @@ Disabled input.
 Input with error message and available input.
 
 ```jsx
-<ui-photo error-message="Some error">
+<ui-photo>
     <template slot="mainLabel">Logo (Optional)</template>
     <template slot="saveDragedPhoto">Save</template>
     <template slot="cancelSavingDragedPhoto">Cancel</template>
@@ -31,7 +31,7 @@ Input with error message and available input.
 Disabled error input.
 
 ```jsx
-<ui-photo error-message="Some error" error-disabled>
+<ui-photo error-disabled>
     <template slot="error">Some error message</template>
 </ui-photo>
 ```
