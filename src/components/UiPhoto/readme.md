@@ -1,7 +1,7 @@
 Input for downloading the photo.
 
 ```jsx
-<ui-photo v-bind:min-width="100" v-bind:min-height="100" v-bind:max-size="32">
+<ui-photo :min-width="100" :min-height="100" :max-size="32">
     <template slot="mainLabel">Logo (Optional)</template>
     <template slot="saveDragedPhoto">Save</template>
     <template slot="cancelSavingDragedPhoto">Cancel</template>
