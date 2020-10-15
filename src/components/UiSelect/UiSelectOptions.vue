@@ -82,7 +82,7 @@ export default {
   padding-bottom: 1rem;
 
   &__list-item {
-    color: grey; //
+    color: grey;
     margin: 0 1em 0 1em;
     padding: 0.3em 0.75em;
     display: flex;
@@ -94,8 +94,8 @@ export default {
     border-radius: 3px;
 
     &:hover {
-      color: black;
-      background-color: var(--ui-col-secondary); //
+      color: #f5f5f5;
+      background-color: var(--ui-col-secondary);
       opacity: 0.8;
     }
 
