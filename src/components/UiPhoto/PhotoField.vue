@@ -5,7 +5,6 @@
         class="ui-photo-field__content"
         :class="{
           'ui-photo-field__content--disabled': $attrs.disabled,
-          'ui-photo-field__content--error': errorMessage,
           'ui-photo-field__content--highlighted': isFileDragged,
         }"
       >
@@ -31,23 +30,16 @@
         </template>
 
         <div class="ui-photo-field__inner">
-          <template v-if="!$attrs.disabled">
-            <i
-              v-if="!document"
-              class="mdi ui-photo-field__icon mdi-camera" />
-            <div
-              v-if="!document"
-              class="ui-photo-field__label"
-              :class="{
-                'ui-photo-field__label--disabled': $attrs.disabled,
-                'ui-photo-field__label--error': errorMessage,
-              }"
-            >
-              <slot name="mainLabel">
-                Your photo
-              </slot>
-            </div>
-          </template>
+          <i
+            v-if="!document"
+            class="mdi ui-photo-field__icon mdi-camera"
+          />
+          <div
+            v-if="!document"
+            class="ui-photo-field__label"
+          >
+            Your photo
+          </div>
         </div>
 
         <input
@@ -55,7 +47,6 @@
           type="file"
           class="ui-photo-field__input"
           :accept="acceptedExtensions"
-          title=""
           @click="reset"
           @change="onChange"
           @dragenter="isFileDragged = true"
@@ -65,7 +56,7 @@
       </div>
 
       <div
-        class="ui-photo-field__err-mes"
+        class="ui-photo-field__err-msg"
         v-if="hasSlot('error')">
         <slot name="error" />
       </div>
@@ -97,10 +88,6 @@ export default {
     maxSize: {
       type: Number,
       default: MAX_FILE_MEGABYTES,
-    },
-    errorMessage: {
-      type: String,
-      default: undefined,
     },
     minWidth: {
       type: Number,
@@ -285,15 +272,14 @@ $z-reset-btn: 1;
     opacity: 0;
     width: var(--ui-width);
     height: 100%;
+    &[disabled]{
+      cursor: auto;
+    }
   }
 
   &__icon {
     color: var(--ui-icon-color);
     font-size: 7rem;
-  }
-
-  &__label--error {
-    color: var(--ui-col-error);
   }
 
   &__container {
@@ -319,18 +305,14 @@ $z-reset-btn: 1;
     opacity: 1;
   }
 
-  &__content--error {
-    border-color: var(--ui-col-error);
-  }
-
   &__content--highlighted {
     background-color: var(--ui-content-highlighted-background-color);
     border-color: var(--ui-content-highlighted-border-color);
   }
 
-  &__content--disabled,
-  &__label--disabled {
+  &__content--disabled {
     filter: grayscale(100%);
+    opacity: 0.5;
   }
 
   &__img-preview-wrp {
@@ -369,13 +351,11 @@ $z-reset-btn: 1;
     opacity: 0;
   }
 
-  //......................
-  &__err-mes {
+  &__err-msg {
+    display: block;
     color: var(--ui-col-error);
-    margin-top: 0.4rem;
     font-size: var(--ui-font-size);
-    line-height: 1.25;
-    background-color: var(--ui-col-error);
+    margin-top: 0.5rem;
   }
 }
 

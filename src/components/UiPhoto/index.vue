@@ -1,6 +1,11 @@
 <template>
   <div class="ui-photo">
     <div class="ui-photo-clipper">
+      <div
+        class="ui-photo-clipper__label"
+      >
+        <slot name="mainLabel" />
+      </div>
       <ui-photo-field
         name="ui-photo-clipper-img"
         :value="originImg"
@@ -10,71 +15,58 @@
         :disabled="disabled"
         :file-extensions="IMAGE_FILE_EXTENSIONS"
         :max-size="maxSize"
-        :error-message="errorMessage"
         @input="tryCropImg"
         @err-invalid-file-size="$emit('err-invalid-file-size')"
         @err-invalid-file-type="$emit('err-invalid-file-type')"
         @err-invalid-file-dimensions="$emit('err-invalid-file-dimensions')"
-      />
+      >
+        <slot
+          name="error"
+          slot="error" />
+      </ui-photo-field>
       <transition
         name="ui-photo-clipper__modal"
         v-if="isEditorOpened">
         <div class="ui-photo-clipper__modal-mask">
-          <div class="ui-photo-clipper__modal-wrapper">
-            <div class="ui-photo-clipper__modal-container">
-              <div class="ui-photo-clipper__modal-body">
+          <div class="ui-photo-clipper__modal-container">
+            <div class="ui-photo-clipper__editor">
+              <clipper-basic
+                class="ui-photo-clipper__clipper"
+                :src="imgURL"
+                ref="clipper"
+                bg-color="transparent"
+                :ratio="ratio"
+              >
                 <div
-                  class="ui-photo-clipper__label"
-                  :class="{
-                    'ui-photo-clipper__label--disabled': $attrs.disabled,
-                    'ui-photo-clipper__label--error': errorMessage,
-                  }"
+                  class="ui-photo-clipper__no-image"
+                  slot="placeholder">
+                  ƒ
+                  <!-- eslint-disable max-len -->
+                  <i
+                    class="mdi mdi-face-recognition ui-photo-clipper__icon ui-photo-clipper__reset-icon"
+                  />
+                  <!-- eslint-enable max-len -->
+                </div>
+              </clipper-basic>
+
+              <div class="ui-photo-clipper__actions">
+                <ui-button
+                  look="secondary"
+                  :title="'clipper-field.cancel-lbl'"
+                  fill="none"
+                  @click="reset"
+                  full-width
                 >
-                  <slot name="mainLabel" />
-                </div>
-
-                <div class="ui-photo-clipper__editor">
-                  <clipper-basic
-                    class="ui-photo-clipper__clipper"
-                    :src="imgURL"
-                    ref="clipper"
-                    bg-color="transparent"
-                    :ratio="ratio"
-                  >
-                    <div
-                      class="ui-photo-clipper__no-image"
-                      slot="placeholder">
-                      ƒ
-                      <!-- eslint-disable max-len -->
-                      <i
-                        class="mdi mdi-face-recognition ui-photo-clipper__icon ui-photo-clipper__reset-icon"
-                      />
-                      <!-- eslint-enable max-len -->
-                    </div>
-                  </clipper-basic>
-
-                  <div class="ui-photo-clipper__actions">
-                    <ui-button
-                      look="secondary"
-                      :title="'clipper-field.cancel-lbl'"
-                      fill="none"
-                      :disabled="disabled"
-                      @click="reset"
-                      full-width
-                    >
-                      <slot name="cancelSavingDragedPhoto" />
-                    </ui-button>
-                    <ui-button
-                      look="primary"
-                      :title="'clipper-field.save-lbl'"
-                      :disabled="disabled"
-                      @click="cropImg"
-                      full-width
-                    >
-                      <slot name="saveDragedPhoto" />
-                    </ui-button>
-                  </div>
-                </div>
+                  <slot name="cancelSavingDragedPhoto" />
+                </ui-button>
+                <ui-button
+                  look="primary"
+                  :title="'clipper-field.save-lbl'"
+                  @click="cropImg"
+                  full-width
+                >
+                  <slot name="saveDragedPhoto" />
+                </ui-button>
               </div>
             </div>
           </div>
@@ -116,10 +108,6 @@ export default {
     maxSize: {
       type: Number,
       default: MAX_FILE_MEGABYTES,
-    },
-    errorMessage: {
-      type: String,
-      default: undefined,
     },
     minWidth: {
       type: Number,
@@ -207,16 +195,6 @@ export default {
 
 $max-width: 40rem;
 
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
-}
-
-.fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */
-{
-  opacity: 0;
-}
-
 .ui-photo-clipper {
   --ui-display: flex;
   --ui-justify-content: center;
@@ -230,6 +208,7 @@ $max-width: 40rem;
   --ui-app-button-flat-hover-background-color: #d3daf7;
 
   width: 100%;
+  font-family: var(--ui-font-family);
 
   &__editor {
     display: var(--ui-display);
@@ -245,17 +224,10 @@ $max-width: 40rem;
   }
 
   &__label {
+    margin-bottom: 1rem;
     font-size: 1.2rem;
+    text-align: var(--ui-text-alight);
     color: var(--ui-label-color);
-    margin-bottom: 0.6rem;
-  }
-
-  &__label--error {
-    color: var(--ui-col-error);
-  }
-
-  &__label--disabled {
-    filter: grayscale(100%);
   }
 
   &__clipper {
@@ -292,50 +264,28 @@ $max-width: 40rem;
 
   &__modal-mask {
     position: fixed;
-    z-index: 9998;
-    top: 0;
-    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
     height: 100%;
+    top: 0;
+    left: 0;
     background-color: rgba(0, 0, 0, 0.5);
-    display: table;
     transition: opacity 0.3s ease;
-  }
-
-  &__modal-wrapper {
-    display: table-cell;
-    vertical-align: middle;
+    z-index: 9998;
   }
 
   &__modal-container {
     width: 50rem;
-    margin: 0px auto;
-    background-color: #fff;
-    border-radius: 2px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+    border-radius: .5rem;
+    box-shadow: 0 .2rem .5rem rgba(0, 0, 0, 0.33);
     transition: all 0.3s ease;
-    font-family: Helvetica, Arial, sans-serif;
-  }
-
-  &__modal-header h3 {
-    margin-top: 0;
-    text-align: center;
-    text-transform: uppercase;
-    color: var(--ui-text-alight);
-  }
-
-  &__modal-body {
-    margin: 20px 0;
-  }
-
-  &__modal-container {
-    -webkit-transform: scale(1.1);
     transform: scale(1.1);
   }
 
   &__modal-enter &__modal-container,
   &__modal-leave-active &__modal-container {
-    -webkit-transform: scale(1.1);
     transform: scale(1.1);
   }
 
