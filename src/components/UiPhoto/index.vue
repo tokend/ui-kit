@@ -154,12 +154,12 @@ export default {
       this.resultURL = canvas.toDataURL(this.originImg.mimeType, 1)
 
       const blob = this.dataURItoBlob(this.resultURL)
+
       this.originImg = new Document({
         mimeType: blob.type,
         name: 'new__' + this.originImg.name,
-        type: this.documentType,
         file: blob,
-      })
+      }, this.documentType)
       this.isEditorOpened = false
       this.$emit('input', this.originImg)
     },
