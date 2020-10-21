@@ -148,10 +148,9 @@ export default {
           this.documentUrl = await FileUtil.getDataUrl(file)
           this.document = new Document({
             mimeType: file.type,
-            type: this.documentType,
             name: file.name,
             file: file,
-          })
+          }, this.documentType)
           this.$emit('input', this.document)
         } else {
           this.$emit('error')
