@@ -71,9 +71,9 @@ export default {
   --ui-button-active-transition: none;
   --ui-button-active-transform: none;
   --ui-button-text-align: center;
-  --ui-button-padding: 0;
+  --ui-button-padding: 0.75rem 2.5rem;
   --ui-button-font-size: var(--ui-font-size);
-  --ui-button-width: 20rem;
+  --ui-button-width: auto;
   --ui-button-font-weight: 700;
   --ui-button-border-radius: var(--ui-border-radius);
   --ui-button-box-shadow: var(--ui-box-shadow);
