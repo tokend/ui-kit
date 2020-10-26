@@ -24,7 +24,7 @@
             <i class="mdi mdi-file ui-photo-field__icon-preview" />
           </div>
 
-          <div class="ui-photo-field__change-preview-wrp">
+          <div v-if="!$attrs.disabled" class="ui-photo-field__change-preview-wrp">
             <span class="ui-photo-field__change-preview">Change photo</span>
           </div>
         </template>
@@ -32,7 +32,8 @@
         <div class="ui-photo-field__inner">
           <i
             v-if="!document"
-            class="mdi ui-photo-field__icon mdi-camera"
+            class="mdi ui-photo-field__icon"
+            :class="fieldIcon"
           />
           <div
             v-if="!document"
@@ -97,6 +98,10 @@ export default {
       type: Number,
       default: 0,
     },
+    fieldIcon: {
+      type: String,
+      default: '',
+    }
   },
 
   data: (_) => ({
