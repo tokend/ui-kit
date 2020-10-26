@@ -15,6 +15,7 @@
         :disabled="disabled"
         :file-extensions="IMAGE_FILE_EXTENSIONS"
         :max-size="maxSize"
+        :field-icon="fieldIcon"
         @input="tryCropImg"
         @err-invalid-file-size="$emit('err-invalid-file-size')"
         @err-invalid-file-type="$emit('err-invalid-file-type')"
@@ -36,6 +37,7 @@
                 ref="clipper"
                 bg-color="transparent"
                 :ratio="ratio"
+                :wrap-ratio="wrapRatio"
               >
                 <div
                   class="ui-photo-clipper__no-image"
@@ -119,12 +121,20 @@ export default {
     },
     ratio: {
       type: Number,
+      default: 0,
+    },
+    wrapRatio: {
+      type: Number,
       default: 1,
     },
     disabled: {
       type: Boolean,
       default: false,
     },
+    fieldIcon: {
+      type: String,
+      default: 'mdi-camera',
+    }
   },
   data () {
     return {
@@ -231,6 +241,8 @@ $max-width: 40rem;
   }
 
   &__clipper {
+    width: 100%;
+    height: 100%;
     max-width: $max-width;
   }
 
@@ -281,7 +293,6 @@ $max-width: 40rem;
     border-radius: .5rem;
     box-shadow: 0 .2rem .5rem rgba(0, 0, 0, 0.33);
     transition: all 0.3s ease;
-    transform: scale(1.1);
   }
 
   &__modal-enter &__modal-container,
