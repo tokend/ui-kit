@@ -27,7 +27,7 @@
         fill="none"
         look="secondary"
         class="ui-phone__country-dropdown-btn"
-        :is-disabled-phone="isDisabled"
+        :is-disabled="isDisabled"
         @click="toggleCountriesDropdown"
       >
         <ui-flag :country="countryCode" />
