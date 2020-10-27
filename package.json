@@ -1,6 +1,6 @@
 {
   "name": "@tokend/ui-kit",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "main": "src/index.js",
   "repository": "git@github.com:tokend/ui-kit.git",
   "author": "Distributed Lab <contact@distributedlab.com>",
@@ -27,7 +27,6 @@
   },
   "dependencies": {
     "@mdi/font": "^5.6.55",
-    "@tokend/js-sdk": "^1.14.0-rc.3",
     "canvas": "^2.6.1",
     "lodash": "^4.17.15",
     "lodash.debounce": "^4.0.8",
@@ -65,7 +64,8 @@
     "webfonts-generator": "^0.4.0"
   },
   "peerDependencies": {
-    "vue": "^2.6.10"
+    "vue": "^2.6.10",
+    "@tokend/js-sdk": "^1.14.0-rc.3"
   },
   "eslintConfig": {
     "root": true,
