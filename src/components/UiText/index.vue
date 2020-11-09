@@ -38,7 +38,7 @@
 
     <span
       class="ui-text__show-text"
-      v-if="!hideSwitch && type === 'password'"
+      v-if="!hideSwitch && !isDisabled && type === 'password'"
       @click="toggleShowText"
     >
       <i class="ui-text__show-text__icon mdi" :class="{
