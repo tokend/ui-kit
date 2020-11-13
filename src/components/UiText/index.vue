@@ -13,7 +13,7 @@
       :disabled="isDisabled"
       :placeholder="' '"
       :value="value"
-      :type="isHidden ? type : 'text'"
+      :type="isTextHidden ? type : 'text'"
       @input="input"
       v-on="reListeners"
       v-bind="$attrs"
@@ -38,12 +38,12 @@
 
     <span
       class="ui-text__show-text"
-      v-if="!hideSwitch && !isDisabled && type === 'password'"
-      @click="toggleShowText"
+      v-if="hideShowBtn && !isDisabled && type === 'password'"
+      @click="isTextHidden = !isTextHidden"
     >
       <i class="ui-text__show-text__icon mdi" :class="{
-        'mdi-eye': isHidden,
-        'mdi-eye-off': !isHidden,
+        'mdi-eye': isTextHidden,
+        'mdi-eye-off': !isTextHidden,
       }"></i>
     </span>
   </label>
@@ -75,16 +75,14 @@ export default {
      * and rounding value
      */
     step: { type: [Number, String], default: '' },
-    /**
-     * Show or hide icon for toggle view state. 
-     */
-    hideSwitch: { type: Boolean, default: false }
+
+    hideShowBtn: { type: Boolean, default: true }, 
   },
   data: _ => ({
     /**
      * State for hide or show password
      */
-    isHidden: { type: Boolean, default: false }
+    isTextHidden: { type: Boolean, default: false }
   }),
   computed: {
     reListeners () {
@@ -103,14 +101,6 @@ export default {
        */
       this.normalizeTargetValue(event.target)
       this.$emit('input', event.target.value)
-    },
-
-    toggleShowText() {
-      if(this.isHidden) {
-        this.isHidden = false
-      } else {
-        this.isHidden = true
-      }
     },
 
     hasSlot (slot) {
