@@ -75,7 +75,9 @@ export default {
      * and rounding value
      */
     step: { type: [Number, String], default: '' },
-
+    /**
+     * Hide or Show 'button-icon' for toggling text show.
+     */
     hideShowBtn: { type: Boolean, default: true }, 
   },
   data: _ => ({
