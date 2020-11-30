@@ -254,6 +254,10 @@ $z-reset-btn: 1;
   --ui-content-highlighted: #f5f6ff;
   --ui-selected-file-color: #837fa1;
 
+  --ui-border-radius: 50%;
+  --ui-photo-width: 15rem;
+  --ui-photo-height: 15rem;
+
   &__label {
     color: var(--ui-label-color);
     text-align: var(--ui-text-align);
@@ -295,10 +299,10 @@ $z-reset-btn: 1;
   &__content {
     display: var(--ui-display);
     justify-content: center;
-    width: 15rem;
-    height: 15rem;
+    width: var(--ui-photo-width);
+    height: var(--ui-photo-height);
     position: relative;
-    border-radius: 50%;
+    border-radius: var(--ui-border-radius);
     border: 0.2rem solid #c4c8cb;
     background-color: var(--ui-content-background-color);
     transition: 0.2s;
@@ -329,7 +333,7 @@ $z-reset-btn: 1;
   }
 
   &__img-preview {
-    border-radius: 50%;
+    border-radius: var(--ui-border-radius);
     object-fit: contain;
     width: 100%;
     height: 100%;
@@ -349,7 +353,7 @@ $z-reset-btn: 1;
     bottom: 0;
     color: var(--ui-label-color);
     font-size: var(--ui-font-size);
-    border-radius: 0 0 50% 50%;
+    border-radius: 0 0 var(--ui-border-radius) var(--ui-border-radius);
     background: var(--ui-content-background-color);
     transition: 0.5s;
     opacity: 0;
