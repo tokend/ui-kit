@@ -13,7 +13,7 @@
       :disabled="isDisabled"
       :placeholder="' '"
       :value="value"
-      :type="type"
+      :type="isTextHidden ? type : 'text'"
       @input="input"
       v-on="reListeners"
       v-bind="$attrs"
@@ -34,6 +34,17 @@
     >
       <!-- @slot Content of this slot will be visible if ``:is-error`` true -->
       <slot name="error" />
+    </span>
+
+    <span
+      class="ui-text__show-text"
+      v-if="hideShowBtn && !isDisabled && type === 'password'"
+      @click="isTextHidden = !isTextHidden"
+    >
+      <i class="ui-text__show-text__icon mdi" :class="{
+        'mdi-eye': isTextHidden,
+        'mdi-eye-off': !isTextHidden,
+      }"></i>
     </span>
   </label>
 </template>
@@ -64,7 +75,17 @@ export default {
      * and rounding value
      */
     step: { type: [Number, String], default: '' },
+    /**
+     * Hide or Show 'button-icon' for toggling text show.
+     */
+    hideShowBtn: { type: Boolean, default: true }, 
   },
+  data: _ => ({
+    /**
+     * State for hide or show password
+     */
+    isTextHidden: { type: Boolean, default: false }
+  }),
   computed: {
     reListeners () {
       const { input, ...listeners } = this.$listeners
@@ -83,6 +104,7 @@ export default {
       this.normalizeTargetValue(event.target)
       this.$emit('input', event.target.value)
     },
+
     hasSlot (slot) {
       return !!this.$slots[slot]
     },
@@ -344,6 +366,23 @@ export default {
       line-height: var(--ui-text-label-font-size-filled);
       top: var(--ui-text-label-top-filled);
       left: var(--ui-text-label-left-filled);
+    }
+  }
+
+  &__show-text {
+    position: absolute;
+    top: 0.7rem;
+    right: 2rem;
+    font-size: 2.5rem;
+    cursor: pointer;
+
+    &__icon{
+      color: var(--ui-col-secondary);
+      transition: 0.3s;
+    }
+
+    &:hover &__icon{
+      color: var(--ui-text-color);
     }
   }
 }
