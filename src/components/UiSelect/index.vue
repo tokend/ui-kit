@@ -144,10 +144,10 @@ export default {
   components: {
     UiSelectOptions,
     UiButton,
-    UiText
+    UiText,
   },
   directives: {
-    onClickaway
+    onClickaway,
   },
   props: {
     /**
@@ -158,7 +158,7 @@ export default {
      */
     options: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     /**
      * Filter method (default: contains): < starts | contains | default >
@@ -168,7 +168,7 @@ export default {
       default: 'contains',
       validator (val) {
         return ['starts', 'contains', 'default', 'none'].includes(val)
-      }
+      },
     },
     value: { type: [String, Number, Object], default: null },
     emptyMessage: { type: String, default: 'No items found' },
@@ -213,7 +213,7 @@ export default {
       isOpen: false,
       currentItem: null,
       selectedIndex: -1,
-      localOptions: []
+      localOptions: [],
     }
   },
 
@@ -257,7 +257,7 @@ export default {
         return this.nullOption.label || this.placeholder
       }
       return this.placeholder
-    }
+    },
   },
 
   watch: {
@@ -267,7 +267,7 @@ export default {
         this.$emit('filter', this.filter)
         this.filterLocalOptions(this.localOptions)
         this.selectedIndex = this.flattenOptions.indexOf(this.currentItem)
-      }
+      },
     },
 
     value: {
@@ -279,7 +279,7 @@ export default {
           'currentItem',
           val ? this.findItemByVal(val, this.localOptions) : null
         )
-      }
+      },
     },
 
     options: {
@@ -294,8 +294,8 @@ export default {
           'currentItem',
           this.findItemByVal(this.value, this.localOptions)
         )
-      }
-    }
+      },
+    },
   },
 
   beforeDestroy () {
@@ -374,6 +374,7 @@ export default {
 
       this.isOpen = true
       this.selectedIndex = this.flattenOptions.indexOf(this.currentItem)
+      this.$emit('is-dropdown-shown', this.isOpen)
 
       if (this.useHotKeys) {
         this.$refs.selectWrap.addEventListener('keydown', this.handleKeyDown)
@@ -386,6 +387,7 @@ export default {
 
     close () {
       this.isOpen = false
+      this.$emit('is-dropdown-shown', this.isOpen)
 
       if (this.useHotKeys) {
         this.$refs.selectWrap.removeEventListener('keydown', this.handleKeyDown)
@@ -405,7 +407,7 @@ export default {
         .reduce((list, item) => [
           ...list,
           item,
-          ...this.flattenShownOptions(item.expand ? item.children || [] : [])
+          ...this.flattenShownOptions(item.expand ? item.children || [] : []),
         ], [])
     },
 
@@ -462,7 +464,7 @@ export default {
       if (selectedNode) {
         VueScrollTo.scrollTo(selectedNode, -1, {
           container: this.$refs.dropdown,
-          offset: -100
+          offset: -100,
         })
       }
     },
@@ -500,8 +502,8 @@ export default {
 
     handleNestedToggle (item) {
       item.expand = !item.expand
-    }
-  }
+    },
+  },
 }
 </script>
 
