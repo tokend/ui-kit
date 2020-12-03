@@ -60,15 +60,15 @@ export default {
   computed: {
     filteredOptions () {
       return this.items.filter(option => option.show && !option.hidden)
-    },
+    }
   },
   methods: {
     handleItemClick (item) {
       !this.allowSelectGroup && item.children
         ? this.$emit('nested-toggle', item)
         : this.$emit('option-select', item)
-    },
-  },
+    }
+  }
 }
 </script>
 

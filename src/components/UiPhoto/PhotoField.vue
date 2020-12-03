@@ -24,10 +24,7 @@
             <i class="mdi mdi-file ui-photo-field__icon-preview" />
           </div>
 
-          <div
-            v-if="!$attrs.disabled"
-            class="ui-photo-field__change-preview-wrp"
-          >
+          <div v-if="!$attrs.disabled" class="ui-photo-field__change-preview-wrp">
             <span class="ui-photo-field__change-preview">Change photo</span>
           </div>
         </template>
