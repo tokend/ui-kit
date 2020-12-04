@@ -374,7 +374,7 @@ export default {
 
       this.isOpen = true
       this.selectedIndex = this.flattenOptions.indexOf(this.currentItem)
-      this.$emit('on-open', this.isOpen)
+      this.$emit('open')
 
       if (this.useHotKeys) {
         this.$refs.selectWrap.addEventListener('keydown', this.handleKeyDown)
@@ -387,7 +387,7 @@ export default {
 
     close () {
       this.isOpen = false
-      this.$emit('on-close', this.isOpen)
+      this.$emit('close')
 
       if (this.useHotKeys) {
         this.$refs.selectWrap.removeEventListener('keydown', this.handleKeyDown)
