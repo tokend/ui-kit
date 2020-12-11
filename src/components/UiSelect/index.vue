@@ -381,7 +381,7 @@ export default {
       }
 
       if (this.hasFilter) {
-        this.$refs.input.$el.focus()
+        this.$nextTick(() => this.$refs.input.$el.focus())
       }
     },
 
@@ -394,7 +394,7 @@ export default {
       }
 
       if (this.hasFilter) {
-        this.$refs.input.$el.blur()
+        this.$nextTick(() => this.$refs.input.$el.blur())
       }
     },
 
