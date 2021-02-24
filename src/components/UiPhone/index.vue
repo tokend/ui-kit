@@ -185,7 +185,9 @@ export default {
 
       return [...pinnedPhones, ...restPhones]
         .filter(item => {
-          return item.name.toLowerCase().includes(this.filter.toLowerCase())
+          return item.name.toLowerCase().includes(this.filter.toLowerCase()) ||
+            item.code.includes(this.filter.toLowerCase()) ||
+            `+${item.dialCode}`.includes(this.filter)
         })
         .map(item => ({
           value: `+${item.dialCode}`,
