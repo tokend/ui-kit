@@ -183,9 +183,14 @@ export default {
         ? []
         : this.phones.filter(item => !this.pinnedCountries.includes(item.code))
 
+      const filterStrRe =
+        new RegExp(this.filter.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, ''), 'i')
+
       return [...pinnedPhones, ...restPhones]
         .filter(item => {
-          return item.name.toLowerCase().includes(this.filter.toLowerCase())
+          return filterStrRe.test(item.name) ||
+           filterStrRe.test(item.code) ||
+           filterStrRe.test(item.dialCode)
         })
         .map(item => ({
           value: `+${item.dialCode}`,

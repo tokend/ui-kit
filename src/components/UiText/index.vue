@@ -41,10 +41,13 @@
       v-if="hideShowBtn && !isDisabled && type === 'password'"
       @click="isTextHidden = !isTextHidden"
     >
-      <i class="ui-text__show-text__icon mdi" :class="{
-        'mdi-eye': isTextHidden,
-        'mdi-eye-off': !isTextHidden,
-      }"></i>
+      <i
+        class="mdi ui-text__show-text-icon"
+        :class="{
+          'mdi-eye': isTextHidden,
+          'mdi-eye-off': !isTextHidden,
+        }"
+      />
     </span>
   </label>
 </template>
@@ -78,7 +81,7 @@ export default {
     /**
      * Hide or Show 'button-icon' for toggling text show.
      */
-    hideShowBtn: { type: Boolean, default: true }, 
+    hideShowBtn: { type: Boolean, default: true },
   },
   data: _ => ({
     /**
@@ -369,19 +372,20 @@ export default {
     }
   }
 
-  &__show-text {
+  &__show-text,
+  &__show-text-icon {
     position: absolute;
     top: 0.7rem;
     right: 2rem;
     font-size: 2.5rem;
     cursor: pointer;
+  }
 
-    &__icon{
-      color: var(--ui-col-secondary);
-      transition: 0.3s;
-    }
+  &__show-text-icon {
+    color: var(--ui-col-secondary);
+    transition: 0.3s;
 
-    &:hover &__icon{
+    &:hover {
       color: var(--ui-text-color);
     }
   }
