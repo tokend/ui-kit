@@ -183,11 +183,14 @@ export default {
         ? []
         : this.phones.filter(item => !this.pinnedCountries.includes(item.code))
 
-      return [...pinnedPhones, ...restPhones]
+      const filterStrRe =
+        new RegExp(this.filter.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, ''), 'i')
+
+      const filteredPhones = [...pinnedPhones, ...restPhones]
         .filter(item => {
-          return item.name.toLowerCase().includes(this.filter.toLowerCase()) ||
-            item.code.includes(this.filter.toLowerCase()) ||
-            `+${item.dialCode}`.includes(this.filter)
+          return filterStrRe.test(item.name.toLowerCase()) ||
+           filterStrRe.test(item.code) ||
+           filterStrRe.test(item.dialCode)
         })
         .map(item => ({
           value: `+${item.dialCode}`,
@@ -195,6 +198,8 @@ export default {
           selectedLabel: `+${item.dialCode}`,
           countryCode: item.code
         }))
+
+      return filteredPhones
     }
   },
 
