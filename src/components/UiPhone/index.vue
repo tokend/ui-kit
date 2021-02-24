@@ -188,7 +188,7 @@ export default {
 
       return [...pinnedPhones, ...restPhones]
         .filter(item => {
-          return filterStrRe.test(item.name.toLowerCase()) ||
+          return filterStrRe.test(item.name) ||
            filterStrRe.test(item.code) ||
            filterStrRe.test(item.dialCode)
         })
