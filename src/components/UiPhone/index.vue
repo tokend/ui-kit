@@ -186,7 +186,7 @@ export default {
       const filterStrRe =
         new RegExp(this.filter.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, ''), 'i')
 
-      const filteredPhones = [...pinnedPhones, ...restPhones]
+      return [...pinnedPhones, ...restPhones]
         .filter(item => {
           return filterStrRe.test(item.name.toLowerCase()) ||
            filterStrRe.test(item.code) ||
@@ -198,8 +198,6 @@ export default {
           selectedLabel: `+${item.dialCode}`,
           countryCode: item.code
         }))
-
-      return filteredPhones
     }
   },
 
